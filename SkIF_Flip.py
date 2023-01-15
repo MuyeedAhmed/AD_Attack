@@ -131,7 +131,9 @@ def drawGraphs(filename, labels, runs, mode):
             flipped += 1
     # print("*****")
     # print(norms, outliers, flipped)
-
+    if flipped == 0:
+        return flipped, -1, 0, 0
+    
     f = plt.figure()
     avgs = np.array(avgs)
     sns.displot(avgs, kde=True, stat='count')
@@ -171,8 +173,8 @@ def drawGraphs(filename, labels, runs, mode):
 
     g = plt.figure
     plot(variables_iter)
-    plt.savefig("FlipFig/"+filename+"_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     plt.axhline(y=0.5*flipped, color='r', linestyle='-')
+    plt.savefig("FlipFig/"+filename+"_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
 
