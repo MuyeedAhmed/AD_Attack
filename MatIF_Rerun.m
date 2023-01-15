@@ -95,7 +95,7 @@ function runIF(filename_with_extension, X, y, params)
     end
     outliersSet = [];
 %     try
-        for z = 1:10
+        for z = 1:50
             [forest, tf, score] = iforest(X, ContaminationFraction=p1, NumLearners=str2double(p2), NumObservationsPerLearner=p3);
             outliersSet = [outliersSet;tf'];
 

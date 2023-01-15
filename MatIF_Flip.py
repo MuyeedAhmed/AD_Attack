@@ -48,7 +48,7 @@ def isolationforest(filename, optSettings):
         print("File doesn't exist")
         return
     
-    runs = 10
+    runs = 50
     
     
     '''
