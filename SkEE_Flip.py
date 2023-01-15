@@ -3,7 +3,7 @@ import glob
 import pandas as pd
 import mat73
 from scipy.io import loadmat
-from sklearn.ensemble import IsolationForest
+from sklearn.covariance import EllipticEnvelope
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ from time import process_time
 
 datasetFolderDir = 'Dataset/'
 
-def isolationforest(filename, optSettings):
+def ee(filename, optSettings):
     print(filename)
     folderpath = datasetFolderDir
     
@@ -48,36 +48,47 @@ def isolationforest(filename, optSettings):
         return
     
     runs = 50
-    
-    
+    store_precision = [True, False]
+    assume_centered = [True, False]
+    support_fraction = [None, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    contamination = [0.1, 0.2, 0.3, 0.4, 0.5]
+    parameters.append(["store_precision", True, store_precision])
+    parameters.append(["assume_centered", False, assume_centered])
+    parameters.append(["support_fraction", None, support_fraction])
+    parameters.append(["contamination", 0.1, contamination])
     '''
     Default
     '''
-    parameters_default = [100, 'auto', 'auto', 1.0, False, None, False]
-    runIF(filename, X, parameters_default, runs, 'Default')
+    parameters_default = [True, False, None, 0.1]
+    runEE(filename, X, parameters_default, runs, 'Default')
 
     '''
     Optimal
     '''
-    runIF(filename, X, optSettings, runs, "Optimal")
+    runEE(filename, X, optSettings, runs, "Optimal")
     '''
     Fast
     '''
     parameters_fast = [50, 64, 'auto', 1.0, False, None, False]
-    runIF(filename, X, parameters_fast, runs, 'Fast')
+    runEE(filename, X, parameters_fast, runs, 'Fast')
     
     
     
-def runIF(filename, X, params, runs, mode):
+def runEE(filename, X, params, runs, mode):
     
     labels = []
     timeElapsed = []
+    sp = params[0][1]
+    ac = params[1][1]
+    sf = params[2][1]
+    cont = params[3][1]
     for i in range(runs):
         #time
-        t1_start = process_time() 
-        clustering = IsolationForest(n_estimators=params[0], max_samples=params[1], 
-                                      max_features=params[3], bootstrap=params[4], 
-                                      n_jobs=params[5], warm_start=params[6]).fit(X)
+        t1_start = process_time()
+        
+        clustering = EllipticEnvelope(store_precision=sp, assume_centered=ac, 
+                                     support_fraction=sf, contamination=cont).fit(X)
+        
         t1_stop = process_time()
         timeElapsed.append(t1_stop-t1_start)
 
@@ -88,7 +99,7 @@ def runIF(filename, X, params, runs, mode):
     
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, labels, runs, mode)
     
-    f=open("Stats/SkIF.csv", "a")
+    f=open("Stats/SkEE.csv", "a")
     f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
     f.close()
     
@@ -118,7 +129,7 @@ def drawGraphs(filename, labels, runs, mode):
     f = plt.figure()
     avgs = np.array(avgs)
     sns.displot(avgs, kde=True, stat='count')
-    plt.savefig("FlipFig/"+filename+"_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
     
@@ -153,9 +164,9 @@ def drawGraphs(filename, labels, runs, mode):
             break
 
     g = plt.figure
-    plt.plot(variables_iter)
+    plot(variables_iter)
     plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    plt.savefig("FlipFig/"+filename+"_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
 
@@ -194,16 +205,16 @@ if __name__ == '__main__':
     master_files = master_files1 + master_files2
     for i in range(len(master_files)):
         master_files[i] = master_files[i].split("/")[-1].split(".")[0]
-    if os.path.exists("Stats/SkIF.csv"):
-        df = pd.read_csv("Stats/SkIF.csv")
+    if os.path.exists("Stats/SkEE.csv"):
+        df = pd.read_csv("Stats/SkEE.csv")
         done_files = df["Filename"].to_numpy()
         master_files = [item for item in master_files if item not in done_files]
     master_files.sort()
     
-    optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
+    optimalSettingsUni = pd.read_csv("OptimalSettings/SkEE_Uni.csv")
     
-    if os.path.exists("Stats/SkIF.csv")==0:
-        f=open("Stats/SkIF.csv", "w")
+    if os.path.exists("Stats/SkEE.csv")==0:
+        f=open("Stats/SkEE.csv", "w")
         f.write('Filename,Mode,AvgTimeElapsed,Flipped,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
         f.close()
     
@@ -214,7 +225,7 @@ if __name__ == '__main__':
         except:
             pass
         optSettings[5] = None
-        isolationforest(fname, optSettings)
+        ee(fname, optSettings)
         
     # isolationforest('ar1')
     # isolationforest('breastw')

@@ -3,12 +3,13 @@ import glob
 import pandas as pd
 import mat73
 from scipy.io import loadmat
-from sklearn.ensemble import IsolationForest
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set_theme(style="whitegrid")
 from time import process_time
+import matlab.engine
+eng = matlab.engine.start_matlab()
 
 datasetFolderDir = 'Dataset/'
 
@@ -47,13 +48,13 @@ def isolationforest(filename, optSettings):
         print("File doesn't exist")
         return
     
-    runs = 50
+    runs = 10
     
     
     '''
     Default
     '''
-    parameters_default = [100, 'auto', 'auto', 1.0, False, None, False]
+    parameters_default = [0.1, 100, 'auto']
     runIF(filename, X, parameters_default, runs, 'Default')
 
     '''
@@ -63,32 +64,38 @@ def isolationforest(filename, optSettings):
     '''
     Fast
     '''
-    parameters_fast = [50, 64, 'auto', 1.0, False, None, False]
+    parameters_fast = [optSettings[0], 50, 64]
     runIF(filename, X, parameters_fast, runs, 'Fast')
     
     
     
 def runIF(filename, X, params, runs, mode):
+    labelFile = filename + "_" + str(params[0]) + "_" + str(params[1]) + "_" + str(params[2])
+    print(params)
+    frr=open("GD_ReRun/MatIF.csv", "a")
+    frr.write(filename+","+str(params[0])+","+str(params[1])+","+str(params[2])+'\n')
+    frr.close()
+    # try:
+    t1_start = process_time()
     
-    labels = []
-    timeElapsed = []
-    for i in range(runs):
-        #time
-        t1_start = process_time() 
-        clustering = IsolationForest(n_estimators=params[0], max_samples=params[1], 
-                                      max_features=params[3], bootstrap=params[4], 
-                                      n_jobs=params[5], warm_start=params[6]).fit(X)
-        t1_stop = process_time()
-        timeElapsed.append(t1_stop-t1_start)
-
-        l = clustering.predict(X)
-        l = [0 if x == 1 else 1 for x in l]
-        labels.append(l)
-    avgTimeElapsed = sum(timeElapsed)/len(timeElapsed)
+    eng.MatIF_Rerun(nargout=0)
+    t1_stop = process_time()
+    avgTimeElapsed = (t1_stop-t1_start)/runs
+    
+    frr=open("GD_ReRun/MatIF.csv", "w")
+    frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
+    frr.close()
+    if os.path.exists("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv") == 0:      
+        print("\nFaild to run Matlab Engine from Python.\n")
+        exit(0)
+    # except:
+    #     print("\nFaild to run Matlab Engine from Python.\n")
+    #     exit(0)    
+    labels =  pd.read_csv("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv", header=None).to_numpy()
     
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, labels, runs, mode)
     
-    f=open("Stats/SkIF.csv", "a")
+    f=open("Stats/MatIF.csv", "a")
     f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
     f.close()
     
@@ -118,7 +125,7 @@ def drawGraphs(filename, labels, runs, mode):
     f = plt.figure()
     avgs = np.array(avgs)
     sns.displot(avgs, kde=True, stat='count')
-    plt.savefig("FlipFig/"+filename+"_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
     
@@ -155,7 +162,7 @@ def drawGraphs(filename, labels, runs, mode):
     g = plt.figure
     plt.plot(variables_iter)
     plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    plt.savefig("FlipFig/"+filename+"_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
 
@@ -194,29 +201,27 @@ if __name__ == '__main__':
     master_files = master_files1 + master_files2
     for i in range(len(master_files)):
         master_files[i] = master_files[i].split("/")[-1].split(".")[0]
-    if os.path.exists("Stats/SkIF.csv"):
-        df = pd.read_csv("Stats/SkIF.csv")
+    if os.path.exists("Stats/MatIF.csv"):
+        df = pd.read_csv("Stats/MatIF.csv")
         done_files = df["Filename"].to_numpy()
         master_files = [item for item in master_files if item not in done_files]
     master_files.sort()
     
-    optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
+    optimalSettingsUni = pd.read_csv("OptimalSettings/MatIF_Uni.csv")
     
-    if os.path.exists("Stats/SkIF.csv")==0:
-        f=open("Stats/SkIF.csv", "w")
+    if os.path.exists("Stats/MatIF.csv")==0:
+        f=open("Stats/MatIF.csv", "w")
         f.write('Filename,Mode,AvgTimeElapsed,Flipped,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
         f.close()
     
     for fname in master_files:
         optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-        try:
-            optSettings[1] = float(optSettings[1])
-        except:
-            pass
-        optSettings[5] = None
         isolationforest(fname, optSettings)
+
+
+    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
         
-    # isolationforest('ar1')
+    # isolationforest('breastw', optSettings)
     # isolationforest('breastw')
     # isolationforest("arsenic-female-lung")
     
