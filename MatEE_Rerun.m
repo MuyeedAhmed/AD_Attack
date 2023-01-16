@@ -62,7 +62,7 @@ function timeE = EE(filename, parameters, runs)
         
     end
     
-    runEE(filename, X, y, parameters);
+    timeE = runEE(filename, X, y, parameters);
             
   end
 %% Run EE
@@ -72,7 +72,7 @@ function timeE = runEE(filename_with_extension, X, y, params, runs)
     labelFile = "Labels/EE_Matlab/Labels_Mat_EE_"+filename + "_" + params(1).default + "_" + params(2).default + "_" + params(3).default + "_" + params(4).default + "_" + params(5).default + "_" + params(6).default + "_" + params(7).default + "_" + params(8).default + "_" + params(9).default + ".csv";
     if isfile(labelFile)
         timeE = -1;
-       return
+        return
     end
     p1 = params(1).default;
     p2 = params(2).default;
