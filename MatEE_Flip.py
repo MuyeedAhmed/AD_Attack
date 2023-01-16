@@ -82,9 +82,9 @@ def ReRun_CSV(filename, params):
 def runEE(filename, X, params, runs, mode, t):
     labelFile = filename + "_" + str(params[0]) + "_" + str(params[1]) + "_" + str(params[2]) + "_" + str(params[3]) + "_" + str(params[4]) + "_" + str(params[5]) + "_" + str(params[6]) + "_" + str(params[7]) + "_" + str(params[8])
     
-    if os.path.exists("Labels/IF_Matlab/Labels_Mat_EE_"+labelFile+".csv"):
+    if os.path.exists("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile+".csv"):
     
-        labels =  pd.read_csv("Labels/IF_Matlab/Labels_Mat_EE_"+labelFile+".csv", header=None).to_numpy()
+        labels =  pd.read_csv("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile+".csv", header=None).to_numpy()
     else:
         return
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, labels, runs, mode)
