@@ -1,0 +1,4 @@
+Filename,Method,OutlierFraction,NumTrials,BiasCorrection,NumOGKIterations,UnivariateEstimator,ReweightingMethod,NumConcentrationSteps,StartMethod
+wine,fmcd,0.5,500,1,2,tauscale,rfch,10,classical
+wine,ogk,0.5,100,1,1,tauscale,rfch,10,classical
+wine,ogk,0.5,100,1,1,tauscale,rfch,10,classical
