@@ -212,14 +212,13 @@ if __name__ == '__main__':
         frr=open("GD_ReRun/MatIF.csv", "w")
         frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
         frr.close()
-        break
-        # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-        # isolationforest(fname, optSettings)
+        optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        isolationforest(fname, optSettings)
 
 
-    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
         
-    isolationforest('breastw', optSettings)
+    # isolationforest('breastw', optSettings)
     # isolationforest('breastw')
     # isolationforest("arsenic-female-lung")
     
