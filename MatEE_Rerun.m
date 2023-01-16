@@ -62,7 +62,7 @@ function timeE = EE(filename, parameters, runs)
         
     end
     
-    timeE = runEE(filename, X, y, parameters);
+    timeE = runEE(filename, X, y, parameters, runs);
             
   end
 %% Run EE

@@ -52,6 +52,7 @@ def ee(filename, optSettings):
     parameters_default = ["fmcd", 0.5, 500, 1, 2, "tauscale", "rfch", 10, "classical"]
     parameters_fast = optSettings
     parameters_fast[2] = 100
+    parameters_fast[4] = 1
     ReRun_CSV(filename, parameters_default)
     ReRun_CSV(filename, optSettings)
     ReRun_CSV(filename, parameters_fast)
