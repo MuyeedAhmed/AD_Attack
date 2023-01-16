@@ -1,1 +1,4 @@
 Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
+breastw,0.1,100,auto
+breastw,0.241581259,100,auto
+breastw,0.241581259,50,64

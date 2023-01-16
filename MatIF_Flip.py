@@ -50,53 +50,47 @@ def isolationforest(filename, optSettings):
     
     runs = 50
     
+    parameters_default = [0.1, 100, 'auto']
+    parameters_fast = [optSettings[0], 50, 64]
+    ReRun_CSV(filename, parameters_default)
+    ReRun_CSV(filename, optSettings)
+    ReRun_CSV(filename, parameters_fast)
     
+    time = eng.MatIF_Rerun(runs)
+    print(time)
     '''
     Default
     '''
-    parameters_default = [0.1, 100, 'auto']
-    runIF(filename, X, parameters_default, runs, 'Default')
+    runIF(filename, X, parameters_default, runs, 'Default', time[0][0])
 
     '''
     Optimal
     '''
-    runIF(filename, X, optSettings, runs, "Optimal")
+    runIF(filename, X, optSettings, runs, "Optimal", time[0][1])
     '''
     Fast
     '''
-    parameters_fast = [optSettings[0], 50, 64]
-    runIF(filename, X, parameters_fast, runs, 'Fast')
+    runIF(filename, X, parameters_fast, runs, 'Fast', time[0][2])
     
-    
-    
-def runIF(filename, X, params, runs, mode):
-    labelFile = filename + "_" + str(params[0]) + "_" + str(params[1]) + "_" + str(params[2])
-    print(params)
+
+def ReRun_CSV(filename, params):
     frr=open("GD_ReRun/MatIF.csv", "a")
     frr.write(filename+","+str(params[0])+","+str(params[1])+","+str(params[2])+'\n')
     frr.close()
-    # try:
-    t1_start = process_time()
+
+  
+def runIF(filename, X, params, runs, mode, t):
+    labelFile = filename + "_" + str(params[0]) + "_" + str(params[1]) + "_" + str(params[2])
     
-    eng.MatIF_Rerun(nargout=0)
-    t1_stop = process_time()
-    avgTimeElapsed = (t1_stop-t1_start)/runs
+    if os.path.exists("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv"):
     
-    frr=open("GD_ReRun/MatIF.csv", "w")
-    frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
-    frr.close()
-    if os.path.exists("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv") == 0:      
-        print("\nFaild to run Matlab Engine from Python.\n")
-        exit(0)
-    # except:
-    #     print("\nFaild to run Matlab Engine from Python.\n")
-    #     exit(0)    
-    labels =  pd.read_csv("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv", header=None).to_numpy()
-    
+        labels =  pd.read_csv("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv", header=None).to_numpy()
+    else:
+        return
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, labels, runs, mode)
     
     f=open("Stats/MatIF.csv", "a")
-    f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
+    f.write(filename+','+mode+','+str(t)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
     f.close()
     
 def drawGraphs(filename, labels, runs, mode):
@@ -215,13 +209,17 @@ if __name__ == '__main__':
         f.close()
     
     for fname in master_files:
-        optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-        isolationforest(fname, optSettings)
+        frr=open("GD_ReRun/MatIF.csv", "w")
+        frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
+        frr.close()
+        break
+        # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        # isolationforest(fname, optSettings)
 
 
-    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
         
-    # isolationforest('breastw', optSettings)
+    isolationforest('breastw', optSettings)
     # isolationforest('breastw')
     # isolationforest("arsenic-female-lung")
     

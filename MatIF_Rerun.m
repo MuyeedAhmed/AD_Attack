@@ -1,14 +1,10 @@
-clear
-clc
-%% Init
-main_function()
-%% Main Function
-function main_function()
+function time = MatIF_ReRun(runs)
     filename = 'GD_ReRun/MatIF.csv';
     opts = detectImportOptions(filename);
     opts = setvartype(opts,'char');  % or 'string'
     T = readtable(filename,opts);
     T = table2array(T);
+    time = [];
     for i = 1:size(T,1)
         parameters = [];
         ContaminationFraction.name = "ContaminationFraction";
@@ -23,9 +19,8 @@ function main_function()
         
         parameters = [ContaminationFraction, NumLearners, NumObservationsPerLearner];
     
-        
-        IF(cell2mat(T(i,1)), parameters);
-        
+        timeE = IF(cell2mat(T(i,1)), parameters, runs);
+        time = [time timeE];
     end
 end
 
@@ -47,7 +42,7 @@ function [X, y] = matfileread(readfilename)
 end
 
 %% IF
-function IF(filename, parameters)
+function timeE = IF(filename, parameters, runs)
     readfilename = sprintf('Dataset/%s', filename);
     
     if isfile(sprintf('Dataset/%s.csv', filename))
@@ -57,21 +52,19 @@ function IF(filename, parameters)
         [X, y] = matfileread(sprintf('Dataset/%s.mat', filename));
         
     end
-
-    runIF(filename, X, y, parameters);
-            
+    timeE = runIF(filename, X, y, parameters, runs);
+    
   end
 %% Run IF
-function runIF(filename_with_extension, X, y, params)
+function timeE = runIF(filename_with_extension, X, y, params, runs)
     filename_char = convertStringsToChars(filename_with_extension);
     filename = filename_char;
     labelFile = "Labels/IF_Matlab/Labels_Mat_IF_"+filename + "_" + params(1).default + "_" + params(2).default + "_" + params(3).default + ".csv";
     
     if isfile(labelFile)
+        timeE = -1;
         return
     end
-
-    
     p1 = params(1).default;
     p2 = params(2).default;
     p3 = params(3).default;
@@ -94,9 +87,13 @@ function runIF(filename_with_extension, X, y, params)
         p3 = floor(str2double(p3)*size(X,1));
     end
     outliersSet = [];
+    timeElap = [];
 %     try
-        for z = 1:50
+        for z = 1:runs
+            tic
             [forest, tf, score] = iforest(X, ContaminationFraction=p1, NumLearners=str2double(p2), NumObservationsPerLearner=p3);
+            t = toc;
+            timeElap = [timeElap t];
             outliersSet = [outliersSet;tf'];
 
         end
@@ -104,4 +101,5 @@ function runIF(filename_with_extension, X, y, params)
 %     catch
 %         fprintf("-Failed")
 %     end
+    timeE = mean(timeElap);
 end
