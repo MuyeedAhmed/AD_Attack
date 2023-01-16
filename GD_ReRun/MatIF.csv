@@ -1,4 +1,0 @@
-Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
-wine,0.1,100,auto
-wine,0.1,128,auto
-wine,0.1,50,64
