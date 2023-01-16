@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 sns.set_theme(style="whitegrid")
 from time import process_time
 
+import warnings
+warnings.filterwarnings(action='ignore')
+
 datasetFolderDir = 'Dataset/'
 
 def ee(filename, optSettings):
@@ -48,14 +51,8 @@ def ee(filename, optSettings):
         return
     
     runs = 50
-    store_precision = [True, False]
-    assume_centered = [True, False]
-    support_fraction = [None, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    contamination = [0.1, 0.2, 0.3, 0.4, 0.5]
-    parameters.append(["store_precision", True, store_precision])
-    parameters.append(["assume_centered", False, assume_centered])
-    parameters.append(["support_fraction", None, support_fraction])
-    parameters.append(["contamination", 0.1, contamination])
+    
+    
     '''
     Default
     '''
@@ -69,7 +66,7 @@ def ee(filename, optSettings):
     '''
     Fast
     '''
-    parameters_fast = [50, 64, 'auto', 1.0, False, None, False]
+    parameters_fast = [True, False, 0.1, optSettings[3]]
     runEE(filename, X, parameters_fast, runs, 'Fast')
     
     
@@ -78,10 +75,10 @@ def runEE(filename, X, params, runs, mode):
     
     labels = []
     timeElapsed = []
-    sp = params[0][1]
-    ac = params[1][1]
-    sf = params[2][1]
-    cont = params[3][1]
+    sp = params[0]
+    ac = params[1]
+    sf = params[2]
+    cont = params[3]
     for i in range(runs):
         #time
         t1_start = process_time()
@@ -164,7 +161,7 @@ def drawGraphs(filename, labels, runs, mode):
             break
 
     g = plt.figure
-    plot(variables_iter)
+    plt.plot(variables_iter)
     plt.axhline(y=0.5*flipped, color='r', linestyle='-')
     plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
@@ -220,14 +217,14 @@ if __name__ == '__main__':
     
     for fname in master_files:
         optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        
         try:
-            optSettings[1] = float(optSettings[1])
+            optSettings[2] = float(optSettings[2])
         except:
-            pass
-        optSettings[5] = None
+            optSettings[2] = None
         ee(fname, optSettings)
         
-    # isolationforest('ar1')
+    # ee('ar1', [0])
     # isolationforest('breastw')
     # isolationforest("arsenic-female-lung")
     
