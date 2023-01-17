@@ -22,6 +22,7 @@ function main_function()
     if threshold == 0
         threshold = 2;
     end
+    threshold = 1.5;
     outlier1=lof>=threshold;
     writefilename = 'Labels/LOF_Matlab/' + filename + '_Mod.csv';
     csvwrite(writefilename,outlier1')

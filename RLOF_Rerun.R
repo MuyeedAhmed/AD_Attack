@@ -74,7 +74,7 @@ for (j in c(1:length(pred_def))){
 }
 
 write.table(pred_def, paste("Labels/LOF_R/",filename,"_Default.csv",sep = ""),row.names = FALSE, col.names = FALSE,  sep=",")
-
+thr=1.5
 #modified
 pred_mod = pred
 for (j in c(1:length(pred_mod))){

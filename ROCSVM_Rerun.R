@@ -30,10 +30,7 @@ ocsvm_ = function(filename, kernel, degree, gamma, coef0, tolerance, nu, shrinki
     }
   }
   else if (file.exists(paste(folderpath,filename,".csv",sep = ""))){
-    if (file.info(paste(folderpath,filename,".csv",sep = ""))$size > 200000){
-      print("Too Large")
-      return()
-    }
+    
     df = read.csv(paste(folderpath,filename,".csv",sep = "")[1])
     gt = df$target
     X = subset(df, select=-c(target))
