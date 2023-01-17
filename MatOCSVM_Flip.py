@@ -228,16 +228,16 @@ if __name__ == '__main__':
         f.write('Filename,Mode,AvgTimeElapsed,Flipped,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
         f.close()
     
-    # for fname in master_files:
-    #     frr=open("GD_ReRun/MatOCSVM.csv", "w")
-    #     frr.write('Filename,ContaminationFraction,KernelScale,Lambda,NumExpansionDimensions,StandardizeData,BetaTolerance,BetaTolerance,GradientTolerance,IterationLimit\n')
-    #     frr.close()
-    #     optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-    #     ocsvm(fname, optSettings)
+    for fname in master_files:
+        frr=open("GD_ReRun/MatOCSVM.csv", "w")
+        frr.write('Filename,ContaminationFraction,KernelScale,Lambda,NumExpansionDimensions,StandardizeData,BetaTolerance,BetaTolerance,GradientTolerance,IterationLimit\n')
+        frr.close()
+        optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        ocsvm(fname, optSettings)
 
 
-    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
         
-    ocsvm('breastw', optSettings)
-    # isolationforest("arsenic-female-lung")
+    # ocsvm('breastw', optSettings)
+    # # isolationforest("arsenic-female-lung")
     

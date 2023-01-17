@@ -101,7 +101,7 @@ function timeE = runOCSVM(filename_with_extension, X, y, params, runs)
     sX = string([1:size(X, 2)]);
     outliersSet = [];
     timeElap = [];
-%     try
+    try
         for z = 1:runs
             tic
             [Mdl, tf] = ocsvm(X, PredictorNames=sX,ContaminationFraction=p1, KernelScale=p2, Lambda=p3, NumExpansionDimensions=p4, ...
@@ -112,9 +112,9 @@ function timeE = runOCSVM(filename_with_extension, X, y, params, runs)
             outliersSet = [outliersSet;tf'];
         end
         csvwrite(labelFile,outliersSet); 
-%     catch
-%         timeE = -1;
-%         fprintf("-Failed\n")
-%     end
+    catch
+        timeE = -1;
+        fprintf("-Failed\n")
+    end
     timeE = mean(timeElap);
 end
