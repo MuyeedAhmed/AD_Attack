@@ -50,26 +50,6 @@ def ocsvm(filename, optSettings):
     runs = 50
     
     
-    # parameters = []
-
-    # ContaminationFraction = [0.05, 0.1, 0.15, 0.2, 0.25];
-    # KernelScale = [1, "auto", 0.01, 0.05, 0.1, 0.2, 0.5, 1, 2, 5];
-    # Lambda = ["auto", 0.01, 0.05, 0.1, 0.2, 0.5, 1, 2, 5];
-    # NumExpansionDimensions = ["auto", 2^12, 2^15, 2^17, 2^19];
-    # StandardizeData = [0, 1];
-    # BetaTolerance = [1e-2, 1e-3, 1e-4, 1e-5];
-    # GradientTolerance = [1e-3, 1e-4, 1e-5, 1e-6];
-    # IterationLimit = [100, 200, 500, 1000, 2000];
-    
-    # parameters.append(["ContaminationFraction", 0.1, ContaminationFraction])
-    # parameters.append(["KernelScale", 1, KernelScale])
-    # parameters.append(["Lambda", 'auto', Lambda])
-    # parameters.append(["NumExpansionDimensions", 'auto', NumExpansionDimensions])
-    # parameters.append(["StandardizeData", 0, StandardizeData])
-    # parameters.append(["BetaTolerance", 1e-4, BetaTolerance])
-    # parameters.append(["GradientTolerance", 1e-4, GradientTolerance])
-    # parameters.append(["IterationLimit", 1000, IterationLimit])
-    
     parameters_default = [0.1, 1, "auto", "auto", 0, 1e-4, 1e-4, 1000]
     parameters_fast = optSettings
     parameters_fast[3] = 2^8
