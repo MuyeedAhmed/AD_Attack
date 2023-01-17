@@ -1,16 +1,11 @@
-clear
-clc
-%% Init
-main_function()
-%% Main Function
-function main_function()
+function time = MatOCSVM_ReRun(runs)
     filename = 'GD_ReRun/MatOCSVM.csv';
     opts = detectImportOptions(filename);
     opts = setvartype(opts,'char');  % or 'string'
     T = readtable(filename,opts);
     T = table2array(T);
+    time = [];
     for i = 1:size(T,1)
-%         fprintf("%d\n", i)
         parameters = [];
         ContaminationFraction.name = "ContaminationFraction";
         ContaminationFraction.default = cell2mat(T(i,2));
@@ -30,8 +25,8 @@ function main_function()
         IterationLimit.default = str2double(cell2mat(T(i,9)));
         
         parameters = [ContaminationFraction, KernelScale, Lambda, NumExpansionDimensions, StandardizeData, BetaTolerance, GradientTolerance, IterationLimit];
-
-        OCSVM(cell2mat(T(i,1)), parameters);
+        timeE = OCSVM(cell2mat(T(i,1)), parameters, runs);
+        time = [time timeE];
     end
 end
 
@@ -53,7 +48,7 @@ function [X, y] = matfileread(readfilename)
 end
 
 %% OCSVM
-function OCSVM(filename, parameters)
+function timeE = OCSVM(filename, parameters, runs)
     readfilename = sprintf('Dataset/%s', filename);
     
     if isfile(sprintf('Dataset/%s.csv', filename))
@@ -62,17 +57,17 @@ function OCSVM(filename, parameters)
     if isfile(sprintf('Dataset/%s.mat', filename))
         [X, y] = matfileread(sprintf('Dataset/%s.mat', filename));
     end
-    
-    runOCSVM(filename, X, y, parameters);
+    timeE = runOCSVM(filename, X, y, parameters, runs);
             
   end
 %% Run OCSVM
-function runOCSVM(filename_with_extension, X, y, params)
+function timeE = runOCSVM(filename_with_extension, X, y, params, runs)
     filename_char = convertStringsToChars(filename_with_extension);
     filename = filename_char;
     labelFile = "Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+filename + "_" + params(1).default + "_" + params(2).default + "_" + params(3).default + "_" + params(4).default + "_" + params(5).default + "_" + params(6).default + "_" + params(7).default + "_" + params(8).default + ".csv";
     if isfile(labelFile)
-       return
+        timeE = -1;
+        return
     end
 %     labelFile
     p1 = params(1).default;
@@ -105,15 +100,21 @@ function runOCSVM(filename_with_extension, X, y, params)
     end
     sX = string([1:size(X, 2)]);
     outliersSet = [];
-    try
-        for z = 1:10
+    timeElap = [];
+%     try
+        for z = 1:runs
+            tic
             [Mdl, tf] = ocsvm(X, PredictorNames=sX,ContaminationFraction=p1, KernelScale=p2, Lambda=p3, NumExpansionDimensions=p4, ...
                 StandardizeData=p5, BetaTolerance=p6, ...
                 GradientTolerance=p7, IterationLimit=p8);
+            t = toc;
+            timeElap = [timeElap t];
             outliersSet = [outliersSet;tf'];
         end
         csvwrite(labelFile,outliersSet); 
-    catch
-        fprintf("-Failed\n")
-    end
+%     catch
+%         timeE = -1;
+%         fprintf("-Failed\n")
+%     end
+    timeE = mean(timeElap);
 end
