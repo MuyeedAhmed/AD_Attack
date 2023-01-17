@@ -22,6 +22,7 @@ datasetFolderDir = 'Dataset/'
 withGT = True
 
 def ocsvm(filename):
+    print(filename)
     folderpath = datasetFolderDir
     global withGT
     
@@ -63,7 +64,7 @@ def ocsvm(filename):
     param_mat_default = [0.1, 1, 'auto', 'auto', 0, 0.0001, 0.0001, 1000]
     
     param_r_mod = ['radial', 3, "auto", 0, 0.001, if_cont, "TRUE", 200, 0.1]
-    param_mat_mod = [if_cont, 1, 'auto', 'auto', 0, 0.0001, 0.0001, 1000]
+    param_mat_mod = [if_cont, 1, 'auto', 'auto', 0, 0.001, 0.001, 1000]
     
     
     param_sk_mod = ['rbf', 3, 'auto', 0.0, 0.001, if_cont, True, 200, -1]
@@ -93,7 +94,7 @@ def ocsvm(filename):
             exit(0)  
     if os.path.exists("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_default+".csv") == 0:        
         try:
-            eng.MatOCSVM_Rerun(nargout=0)
+            eng.MatOCSVM_Rerun(1)
             if os.path.exists("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_default+".csv") == 0:      
                 print("\nFaild to run Matlab Engine from Python.\n")
                 exit(0)
@@ -101,11 +102,11 @@ def ocsvm(filename):
             print("\nFaild to run Matlab Engine from Python.\n")
             exit(0) 
     
-    labels_r = pd.read_csv("Labels/OCSVM_R/"+labelFile_r_default+".csv", header=None).to_numpy()
-    labels_r = np.reshape(labels_r, (1, len(labels_r)))
+    labels_r = pd.read_csv("Labels/OCSVM_R/"+labelFile_r_default+".csv").to_numpy()
+    labels_r = np.int64((labels_r[0][1:])*1)
     labels_mat = pd.read_csv("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_default+".csv", header=None).to_numpy()
     
-    labels_r = labels_r[0]
+    # labels_r = labels_r[0]
     labels_mat = labels_mat[0]
 
 
@@ -138,7 +139,7 @@ def ocsvm(filename):
             exit(0)  
     if os.path.exists("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_mod+".csv") == 0:        
         try:
-            eng.MatOCSVM_Rerun(nargout=0)
+            eng.MatOCSVM_Rerun(1)
             if os.path.exists("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_mod+".csv") == 0:      
                 print("\nFaild to run Matlab Engine from Python.\n")
                 exit(0)
@@ -147,11 +148,11 @@ def ocsvm(filename):
             exit(0) 
             
     
-    labels_r = pd.read_csv("Labels/OCSVM_R/"+labelFile_r_mod+".csv", header=None).to_numpy()
-    labels_r = np.reshape(labels_r, (1, len(labels_r)))
+    labels_r = pd.read_csv("Labels/OCSVM_R/"+labelFile_r_mod+".csv").to_numpy()
+    labels_r = np.int64((labels_r[0][1:])*1)
     labels_mat = pd.read_csv("Labels/OCSVM_Matlab/Labels_Mat_OCSVM_"+labelFile_mat_mod+".csv", header=None).to_numpy()
     
-    labels_r = labels_r[0]
+    labels_r = labels_r
     labels_mat = labels_mat[0]
     
     mvr, mvr_p = drawGraphs(labels_r, labels_mat)
