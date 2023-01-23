@@ -47,7 +47,7 @@ def isolationforest(filename, optSettings):
         print("File doesn't exist")
         return
     
-    runs = 30
+    runs = 50
     
     
     '''
@@ -56,15 +56,15 @@ def isolationforest(filename, optSettings):
     parameters_default = [100, 'auto', 'auto', 1.0, False, None, False]
     runIF(filename, X, gt, parameters_default, runs, 'Default')
 
-    # '''
-    # Optimal
-    # '''
-    # runIF(filename, X, optSettings, runs, "Optimal")
-    # '''
-    # Fast
-    # '''
-    # parameters_fast = [50, 64, 'auto', 1.0, False, None, False]
-    # runIF(filename, X, parameters_fast, runs, 'Fast')
+    '''
+    Optimal
+    '''
+    runIF(filename, X, gt, optSettings, runs, "Optimal")
+    '''
+    Fast
+    '''
+    parameters_fast = [50, 64, 'auto', 1.0, False, None, False]
+    runIF(filename, X, gt, parameters_fast, runs, 'Fast')
     
     
     
@@ -88,9 +88,9 @@ def runIF(filename, X, gt, params, runs, mode):
     
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, gt, labels, runs, mode)
     
-    # f=open("Stats/SkIF.csv", "a")
-    # f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
-    # f.close()
+    f=open("Stats/SkIF.csv", "a")
+    f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(flipped/len(gt))+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
+    f.close()
     
 def drawGraphs(filename, gt, labels, runs, mode):
     print("Start")
@@ -127,64 +127,72 @@ def drawGraphs(filename, gt, labels, runs, mode):
     '''
     50th percetile
     '''
-    # variables_iter = []
-    # for h in range(1,runs):
-    #     norms = 0
-    #     outliers = 0
-    #     variables = 0
-    #     avg = 0
-    #     for i in range(len(labels[0])):
-    #         s = 0
-    #         for j in range(h):
-    #             s+=labels[j][i]
-    #         avg = s/h
-    #         # avgs.append(avg)
-    #         if avg == 0:
-    #             norms += 1
-    #         elif avg == 1:
-    #             outliers += 1
-    #         else:
-    #             variables += 1
-    #     variables_iter.append(variables)
+    variables_iter = []
+    for h in range(1,runs):
+        norms = 0
+        outliers = 0
+        variables = 0
+        avg = 0
+        for i in range(len(labels[0])):
+            s = 0
+            for j in range(h):
+                s+=labels[j][i]
+            avg = s/h
+            # avgs.append(avg)
+            if avg == 0:
+                norms += 1
+            elif avg == 1:
+                outliers += 1
+            else:
+                variables += 1
+        variables_iter.append(variables)
     
     
-    # probability = [x / flipped for x in variables_iter]
-    # for i in range(runs-1):
-    #     if probability[i] < 0.5:
-    #         continue
-    #     else:
-    #         runNumber50p = i
-    #         # print(mode, "50% - ", runNumber50p)
-    #         break
+    probability = [(x / flipped)*100 for x in variables_iter]
+    for i in range(runs-1):
+        if probability[i] < 0.5:
+            continue
+        else:
+            runNumber50p = i
+            # print(mode, "50% - ", runNumber50p)
+            break
 
     # g = plt.figure
     # plt.plot(variables_iter)
     # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    # # plt.savefig("FlipFig/"+filename+"_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     # plt.show()
-
+    
+    g = plt.figure
+    plt.plot(probability)
+    plt.xlabel("Run")
+    plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_Count_percentage.pdf", bbox_inches="tight", pad_inches=0)
+    plt.show()
+    
     '''
     Flipped in a single run (mean)
     '''
-    # flippedIn2Runs = []
-    # for i in range(runs):
-    #     for j in range(i+1,runs):
+    flippedIn2Runs = []
+    for i in range(runs):
+        for j in range(i+1,runs):
             
-    #         norms = 0
-    #         outliers = 0
-    #         variables = 0
-    #         for n in range(len(labels[0])):
-    #             s = labels[i][n] + labels[j][n]                
-    #             avg = s/2
-    #             if avg == 0:
-    #                 norms += 1
-    #             elif avg == 1:
-    #                 outliers += 1
-    #             else:
-    #                 variables += 1
-    #         flippedIn2Runs.append(variables)
+            norms = 0
+            outliers = 0
+            variables = 0
+            for n in range(len(labels[0])):
+                s = labels[i][n] + labels[j][n]                
+                avg = s/2
+                if avg == 0:
+                    norms += 1
+                elif avg == 1:
+                    outliers += 1
+                else:
+                    variables += 1
+            flippedIn2Runs.append(variables)
         
-    # avgFlippedPerRun = sum(flippedIn2Runs)/len(flippedIn2Runs)
+    avgFlippedPerRun = sum(flippedIn2Runs)/len(flippedIn2Runs)
     # print(mode, "- flipped in a single run ", avgFlippedPerRun, " - ", avgFlippedPerRun/len(labels[0]))
 
     
@@ -238,23 +246,23 @@ def drawGraphs(filename, gt, labels, runs, mode):
     Flipped in a single run unsorted
     '''
     
-    flippedIn2Runs = []
+    # flippedIn2Runs = []
     
-    for i in range(runs-1):
-        variables = 0
-        for n in range(len(labels[0])):
-            s = labels[i][n] + labels[i+1][n]                
-            avg = s/2
-            if avg != 0 and avg != 1:
-                variables += 1
-        flippedIn2Runs.append(variables)
+    # for i in range(runs-1):
+    #     variables = 0
+    #     for n in range(len(labels[0])):
+    #         s = labels[i][n] + labels[i+1][n]                
+    #         avg = s/2
+    #         if avg != 0 and avg != 1:
+    #             variables += 1
+    #     flippedIn2Runs.append(variables)
     
-    g = plt.figure
-    plt.plot(flippedIn2Runs)
-    plt.xlabel("Run")
-    plt.ylabel("Points Flipped")
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # g = plt.figure
+    # plt.plot(flippedIn2Runs)
+    # plt.xlabel("Run")
+    # plt.ylabel("Points Flipped")
+    # plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
     '''
     Flipped in a single run unsorted barchart
@@ -278,15 +286,6 @@ def drawGraphs(filename, gt, labels, runs, mode):
         flippedIn2Runs[i][0] = tp_fn
         flippedIn2Runs[i][1] = tn_fp
         
-    # g = plt.figure
-    # plt.plot(flippedIn2Runs)
-    # plt.xlabel("Run")
-    # plt.ylabel("Points Flipped")
-    # plt.legend(["TP to FN", "TN to FP"])
-
-    # plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand_pn.pdf", bbox_inches="tight", pad_inches=0)
-    # plt.show()
-    
     
     bar = flippedIn2Runs.reshape((2, runs-1))
     # create plot
@@ -309,12 +308,11 @@ def drawGraphs(filename, gt, labels, runs, mode):
     plt.xlabel('Runs')
     plt.ylabel('Flipped')
     plt.legend()
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
 
     plt.tight_layout()
     plt.show()
     
-    # return 0,0,0,0
     '''
     Flipped in a single run sorted - asc
     '''
@@ -359,14 +357,14 @@ def drawGraphs(filename, gt, labels, runs, mode):
     plt.plot(f_g)
     plt.xlabel("Run")
     plt.ylabel("Previously Uniscovered Flipped Points")
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_asc.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_asc.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
     g = plt.figure
     plt.plot(f_g_percentage)
     plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points Percentage")
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
+    plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
     
     
@@ -410,18 +408,18 @@ def drawGraphs(filename, gt, labels, runs, mode):
     plt.plot(f_g)
     plt.xlabel("Run")
     plt.ylabel("Previously Uniscovered Flipped Points")
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_dsc.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_dsc.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
 
     g = plt.figure
     plt.plot(f_g_percentage)
     plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points Percentage")
-    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
+    plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
     plt.show()
     
-    # return flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRun/len(labels[0])
-    return flipped, 0, 0, 0
+    return flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRun/len(labels[0])
+    # return flipped, 0, 0, 0
 
     
 if __name__ == '__main__':
@@ -436,26 +434,30 @@ if __name__ == '__main__':
         done_files = df["Filename"].to_numpy()
         master_files = [item for item in master_files if item not in done_files]
     master_files.sort()
-    
+    print(master_files)
+
     optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
     
-    # if os.path.exists("Stats/SkIF.csv")==0:
-    #     f=open("Stats/SkIF.csv", "w")
-    #     f.write('Filename,Mode,AvgTimeElapsed,Flipped,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
-    #     f.close()
+    if os.path.exists("Stats/SkIF.csv")==0:
+        f=open("Stats/SkIF.csv", "w")
+        f.write('Filename,Mode,AvgTimeElapsed,Flipped,FlippedPercentage,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
+        f.close()
     
-    # for fname in master_files:
-    #     optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-    #     try:
-    #         optSettings[1] = float(optSettings[1])
-    #     except:
-    #         pass
-    #     optSettings[5] = None
-    #     isolationforest(fname, optSettings)
+    for fname in master_files:
+        try:
+            optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        except:
+            print(fname, "dont exist")
+        try:
+            optSettings[1] = float(optSettings[1])
+        except:
+            pass
+        optSettings[5] = None
+        isolationforest(fname, optSettings)
               
-    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
   
-    isolationforest('breastw', optSettings)
+    # isolationforest('breastw', optSettings)
     # isolationforest('breastw')
     # isolationforest("arsenic-female-lung")
     
