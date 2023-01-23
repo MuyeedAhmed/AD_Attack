@@ -57,21 +57,21 @@ def ee(filename, optSettings):
     Default
     '''
     parameters_default = [True, False, None, 0.1]
-    runEE(filename, X, parameters_default, runs, 'Default')
+    runEE(filename, X, gt, parameters_default, runs, 'Default')
 
     '''
     Optimal
     '''
-    runEE(filename, X, optSettings, runs, "Optimal")
+    runEE(filename, X, gt, optSettings, runs, "Optimal")
     '''
     Fast
     '''
     parameters_fast = [True, False, 0.1, optSettings[3]]
-    runEE(filename, X, parameters_fast, runs, 'Fast')
+    runEE(filename, X, gt, parameters_fast, runs, 'Fast')
     
     
     
-def runEE(filename, X, params, runs, mode):
+def runEE(filename, X, gt, params, runs, mode):
     
     labels = []
     timeElapsed = []
@@ -97,7 +97,7 @@ def runEE(filename, X, params, runs, mode):
     flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRunPercentage = drawGraphs(filename, labels, runs, mode)
     
     f=open("Stats/SkEE.csv", "a")
-    f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
+    f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(flipped)+','+str(flipped/len(gt))+','+str(runNumber50p)+','+str(avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage)+'\n')
     f.close()
     
 def drawGraphs(filename, labels, runs, mode):
@@ -123,11 +123,11 @@ def drawGraphs(filename, labels, runs, mode):
     if flipped == 0:
         return flipped, -1, 0, 0
     
-    f = plt.figure()
-    avgs = np.array(avgs)
-    sns.displot(avgs, kde=True, stat='count')
-    plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # f = plt.figure()
+    # avgs = np.array(avgs)
+    # sns.displot(avgs, kde=True, stat='count')
+    # plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_NormDist.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
 
     
     variables_iter = []
@@ -160,11 +160,11 @@ def drawGraphs(filename, labels, runs, mode):
             # print(mode, "50% - ", runNumber50p)
             break
 
-    g = plt.figure
-    plt.plot(variables_iter)
-    plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # g = plt.figure
+    # plt.plot(variables_iter)
+    # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
+    # plt.savefig("FlipFig/"+filename+"_SkEE_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
 
 
     '''
@@ -212,12 +212,14 @@ if __name__ == '__main__':
     
     if os.path.exists("Stats/SkEE.csv")==0:
         f=open("Stats/SkEE.csv", "w")
-        f.write('Filename,Mode,AvgTimeElapsed,Flipped,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
+        f.write('Filename,Mode,AvgTimeElapsed,Flipped,FlippedPercentage,RunNumber50p,AvgFlippedPerRun,AvgFlippedPerRunPercentage\n')
         f.close()
     
     for fname in master_files:
-        optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-        
+        try:
+            optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        except:
+            print(fname, "dont exist")
         try:
             optSettings[2] = float(optSettings[2])
         except:
@@ -225,6 +227,4 @@ if __name__ == '__main__':
         ee(fname, optSettings)
         
     # ee('ar1', [0])
-    # isolationforest('breastw')
-    # isolationforest("arsenic-female-lung")
     
