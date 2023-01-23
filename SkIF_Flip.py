@@ -434,7 +434,6 @@ if __name__ == '__main__':
         done_files = df["Filename"].to_numpy()
         master_files = [item for item in master_files if item not in done_files]
     master_files.sort()
-    print(master_files)
 
     optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
     
