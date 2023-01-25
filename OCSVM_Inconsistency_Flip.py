@@ -12,6 +12,7 @@ from sklearn.ensemble import IsolationForest
 from sklearn.svm import OneClassSVM
 
 from sklearn.metrics import f1_score
+from scipy.stats import gmean
 
 import subprocess
 import matlab.engine
@@ -126,13 +127,17 @@ def ocsvm(filename):
     mvr_min_index = mvr.index(min(mvr))
     mvr_max, mvr_p_max, r_tp_m_fn_max, r_tp_m_fn_per_max, r_tn_m_fp_max, r_tn_m_fp_per_max, m_tp_r_fn_max, m_tp_r_fn_per_max, m_tn_r_fp_max, m_tn_r_fp_per_max = mvr[mvr_max_index], mvr_p[mvr_max_index], r_tp_m_fn[mvr_max_index], r_tp_m_fn_per[mvr_max_index], r_tn_m_fp[mvr_max_index], r_tn_m_fp_per[mvr_max_index], m_tp_r_fn[mvr_max_index], m_tp_r_fn_per[mvr_max_index], m_tn_r_fp[mvr_max_index], m_tn_r_fp_per[mvr_max_index]
     mvr_min, mvr_p_min, r_tp_m_fn_min, r_tp_m_fn_per_min, r_tn_m_fp_min, r_tn_m_fp_per_min, m_tp_r_fn_min, m_tp_r_fn_per_min, m_tn_r_fp_min, m_tn_r_fp_per_min = mvr[mvr_min_index], mvr_p[mvr_min_index], r_tp_m_fn[mvr_min_index], r_tp_m_fn_per[mvr_min_index], r_tn_m_fp[mvr_min_index], r_tn_m_fp_per[mvr_min_index], m_tp_r_fn[mvr_min_index], m_tp_r_fn_per[mvr_min_index], m_tn_r_fp[mvr_min_index], m_tn_r_fp_per[mvr_min_index]
+    r_tp_m_fn_per, r_tn_m_fp_per, m_tp_r_fn_per, m_tn_r_fp_per = [(i * 100)+1 for i in r_tp_m_fn_per], [(i * 100)+1 for i in r_tn_m_fp_per], [(i * 100)+1 for i in m_tp_r_fn_per], [(i * 100)+1 for i in m_tn_r_fp_per]
+    r_tp_m_fn_avg, r_tn_m_fp_avg, m_tp_r_fn_avg, m_tn_r_fp_avg = gmean(r_tp_m_fn_per)-1, gmean(r_tn_m_fp_per)-1, gmean(m_tp_r_fn_per)-1, gmean(m_tn_r_fp_per)-1
     
     
     mvs_max_index = mvs.index(max(mvs))
     mvs_min_index = mvs.index(min(mvs))
     mvs_max, mvs_p_max, s_tp_m_fn_max, s_tp_m_fn_per_max, s_tn_m_fp_max, s_tn_m_fp_per_max, m_tp_s_fn_max, m_tp_s_fn_per_max, m_tn_s_fp_max, m_tn_s_fp_per_max = mvs[mvs_max_index], mvs_p[mvs_max_index], s_tp_m_fn[mvs_max_index], s_tp_m_fn_per[mvs_max_index], s_tn_m_fp[mvs_max_index], s_tn_m_fp_per[mvs_max_index], m_tp_s_fn[mvs_max_index], m_tp_s_fn_per[mvs_max_index], m_tn_s_fp[mvs_max_index], m_tn_s_fp_per[mvs_max_index]
     mvs_min, mvs_p_min, s_tp_m_fn_min, s_tp_m_fn_per_min, s_tn_m_fp_min, s_tn_m_fp_per_min, m_tp_s_fn_min, m_tp_s_fn_per_min, m_tn_s_fp_min, m_tn_s_fp_per_min = mvs[mvs_min_index], mvs_p[mvs_min_index], s_tp_m_fn[mvs_min_index], s_tp_m_fn_per[mvs_min_index], s_tn_m_fp[mvs_min_index], s_tn_m_fp_per[mvs_min_index], m_tp_s_fn[mvs_min_index], m_tp_s_fn_per[mvs_min_index], m_tn_s_fp[mvs_min_index], m_tn_s_fp_per[mvs_min_index]
-    
+    s_tp_m_fn_per, s_tn_m_fp_per, m_tp_s_fn_per, m_tn_s_fp_per = [(i * 100)+1 for i in s_tp_m_fn_per], [(i * 100)+1 for i in s_tn_m_fp_per], [(i * 100)+1 for i in m_tp_s_fn_per], [(i * 100)+1 for i in m_tn_s_fp_per]
+    s_tp_m_fn_avg, s_tn_m_fp_avg, m_tp_s_fn_avg, m_tn_s_fp_avg = gmean(s_tp_m_fn_per)-1, gmean(s_tn_m_fp_per)-1, gmean(m_tp_s_fn_per)-1, gmean(m_tn_s_fp_per)-1
+
     rvs, rvs_p, s_tp_r_fn, s_tp_r_fn_per, s_tn_r_fp, s_tn_r_fp_per, r_tp_s_fn, r_tp_s_fn_per, r_tn_s_fp, r_tn_s_fp_per = drawGraphs(gt, labels_sk, labels_r)
     
     # f=open("Stats/OCSVM_Inconsistency.csv", "a")
@@ -154,9 +159,9 @@ def ocsvm(filename):
     f.close()
     f=open("Stats/OCSVM_Inconsistency_Max_Min.csv", "a")
     f.write(filename+',Default,'+str(mvr_p_min)+','+str(mvr_p_max)+','+str(rvs_p)+','+str(rvs_p)+','+str(mvs_p_min)+','+str(mvs_p_max) +",")
-    f.write(str(r_tp_m_fn_per_min)+","+str(r_tp_m_fn_per_max)+","+str(r_tn_m_fp_per_min)+","+str(r_tn_m_fp_per_max)+","+str(m_tp_r_fn_per_min)+","+str(m_tp_r_fn_per_max)+","+str(m_tn_r_fp_per_min)+","+str(m_tn_r_fp_per_max)+",")
+    f.write(str(r_tp_m_fn_per_min)+","+str(r_tp_m_fn_avg)+","+str(r_tp_m_fn_per_max)+","+str(r_tn_m_fp_per_min)+","+str(r_tn_m_fp_avg)+","+str(r_tn_m_fp_per_max)+","+str(m_tp_r_fn_per_min)+","+str(m_tp_r_fn_avg)+","+str(m_tp_r_fn_per_max)+","+str(m_tn_r_fp_per_min)+","+str(m_tn_r_fp_avg)+","+str(m_tn_r_fp_per_max)+",")
     f.write(str(s_tp_r_fn_per)+","+ str(s_tp_r_fn_per)+","+ str(s_tn_r_fp_per)+","+ str(s_tn_r_fp_per)+","+ str(r_tp_s_fn_per)+","+ str(r_tp_s_fn_per)+","+str(r_tn_s_fp_per)+","+str(r_tn_s_fp_per)+",")
-    f.write(str(s_tp_m_fn_per_min)+","+str(s_tp_m_fn_per_max)+","+str(s_tn_m_fp_per_min)+","+str(s_tn_m_fp_per_max)+","+str(m_tp_s_fn_per_min)+","+str(m_tp_s_fn_per_max)+","+str(m_tn_s_fp_per_min)+","+str(m_tn_s_fp_per_max))
+    f.write(str(s_tp_m_fn_per_min)+","+str(s_tp_m_fn_avg)+","+str(s_tp_m_fn_per_max)+","+str(s_tn_m_fp_per_min)+","+str(s_tn_m_fp_avg)+","+str(s_tn_m_fp_per_max)+","+str(m_tp_s_fn_per_min)+","+str(m_tp_s_fn_avg)+","+str(m_tp_s_fn_per_max)+","+str(m_tn_s_fp_per_min)+","+str(m_tn_s_fp_avg)+","+str(m_tn_s_fp_per_max))
     f.write("\n")
     f.close()
     
@@ -204,13 +209,16 @@ def ocsvm(filename):
     mvr_min_index = mvr.index(min(mvr))
     mvr_max, mvr_p_max, r_tp_m_fn_max, r_tp_m_fn_per_max, r_tn_m_fp_max, r_tn_m_fp_per_max, m_tp_r_fn_max, m_tp_r_fn_per_max, m_tn_r_fp_max, m_tn_r_fp_per_max = mvr[mvr_max_index], mvr_p[mvr_max_index], r_tp_m_fn[mvr_max_index], r_tp_m_fn_per[mvr_max_index], r_tn_m_fp[mvr_max_index], r_tn_m_fp_per[mvr_max_index], m_tp_r_fn[mvr_max_index], m_tp_r_fn_per[mvr_max_index], m_tn_r_fp[mvr_max_index], m_tn_r_fp_per[mvr_max_index]
     mvr_min, mvr_p_min, r_tp_m_fn_min, r_tp_m_fn_per_min, r_tn_m_fp_min, r_tn_m_fp_per_min, m_tp_r_fn_min, m_tp_r_fn_per_min, m_tn_r_fp_min, m_tn_r_fp_per_min = mvr[mvr_min_index], mvr_p[mvr_min_index], r_tp_m_fn[mvr_min_index], r_tp_m_fn_per[mvr_min_index], r_tn_m_fp[mvr_min_index], r_tn_m_fp_per[mvr_min_index], m_tp_r_fn[mvr_min_index], m_tp_r_fn_per[mvr_min_index], m_tn_r_fp[mvr_min_index], m_tn_r_fp_per[mvr_min_index]
-    
+    r_tp_m_fn_per, r_tn_m_fp_per, m_tp_r_fn_per, m_tn_r_fp_per = [(i * 100)+1 for i in r_tp_m_fn_per], [(i * 100)+1 for i in r_tn_m_fp_per], [(i * 100)+1 for i in m_tp_r_fn_per], [(i * 100)+1 for i in m_tn_r_fp_per]
+    r_tp_m_fn_avg, r_tn_m_fp_avg, m_tp_r_fn_avg, m_tn_r_fp_avg = gmean(r_tp_m_fn_per)-1, gmean(r_tn_m_fp_per)-1, gmean(m_tp_r_fn_per)-1, gmean(m_tn_r_fp_per)-1
     
     mvs_max_index = mvs.index(max(mvs))
     mvs_min_index = mvs.index(min(mvs))
     mvs_max, mvs_p_max, s_tp_m_fn_max, s_tp_m_fn_per_max, s_tn_m_fp_max, s_tn_m_fp_per_max, m_tp_s_fn_max, m_tp_s_fn_per_max, m_tn_s_fp_max, m_tn_s_fp_per_max = mvs[mvs_max_index], mvs_p[mvs_max_index], s_tp_m_fn[mvs_max_index], s_tp_m_fn_per[mvs_max_index], s_tn_m_fp[mvs_max_index], s_tn_m_fp_per[mvs_max_index], m_tp_s_fn[mvs_max_index], m_tp_s_fn_per[mvs_max_index], m_tn_s_fp[mvs_max_index], m_tn_s_fp_per[mvs_max_index]
     mvs_min, mvs_p_min, s_tp_m_fn_min, s_tp_m_fn_per_min, s_tn_m_fp_min, s_tn_m_fp_per_min, m_tp_s_fn_min, m_tp_s_fn_per_min, m_tn_s_fp_min, m_tn_s_fp_per_min = mvs[mvs_min_index], mvs_p[mvs_min_index], s_tp_m_fn[mvs_min_index], s_tp_m_fn_per[mvs_min_index], s_tn_m_fp[mvs_min_index], s_tn_m_fp_per[mvs_min_index], m_tp_s_fn[mvs_min_index], m_tp_s_fn_per[mvs_min_index], m_tn_s_fp[mvs_min_index], m_tn_s_fp_per[mvs_min_index]
-    
+    s_tp_m_fn_per, s_tn_m_fp_per, m_tp_s_fn_per, m_tn_s_fp_per = [(i * 100)+1 for i in s_tp_m_fn_per], [(i * 100)+1 for i in s_tn_m_fp_per], [(i * 100)+1 for i in m_tp_s_fn_per], [(i * 100)+1 for i in m_tn_s_fp_per]
+    s_tp_m_fn_avg, s_tn_m_fp_avg, m_tp_s_fn_avg, m_tn_s_fp_avg = gmean(s_tp_m_fn_per)-1, gmean(s_tn_m_fp_per)-1, gmean(m_tp_s_fn_per)-1, gmean(m_tn_s_fp_per)-1
+
     # print(mvs_max, mvs_p_max, s_tp_m_fn_max, s_tp_m_fn_per_max, s_tn_m_fp_max, s_tn_m_fp_per_max, m_tp_s_fn_max, m_tp_s_fn_per_max, m_tn_s_fp_max, m_tn_s_fp_per_max)
     # print(mvs_min, mvs_p_min, s_tp_m_fn_min, s_tp_m_fn_per_min, s_tn_m_fp_min, s_tn_m_fp_per_min, m_tp_s_fn_min, m_tp_s_fn_per_min, m_tn_s_fp_min, m_tn_s_fp_per_min)
     
@@ -235,9 +243,9 @@ def ocsvm(filename):
     f.close()
     f=open("Stats/OCSVM_Inconsistency_Max_Min.csv", "a")
     f.write(filename+',Mod,'+str(mvr_p_min)+','+str(mvr_p_max)+','+str(rvs_p)+','+str(rvs_p)+','+str(mvs_p_min)+','+str(mvs_p_max) +",")
-    f.write(str(r_tp_m_fn_per_min)+","+str(r_tp_m_fn_per_max)+","+str(r_tn_m_fp_per_min)+","+str(r_tn_m_fp_per_max)+","+str(m_tp_r_fn_per_min)+","+str(m_tp_r_fn_per_max)+","+str(m_tn_r_fp_per_min)+","+str(m_tn_r_fp_per_max)+",")
+    f.write(str(r_tp_m_fn_per_min)+","+str(r_tp_m_fn_avg)+","+str(r_tp_m_fn_per_max)+","+str(r_tn_m_fp_per_min)+","+str(r_tn_m_fp_avg)+","+str(r_tn_m_fp_per_max)+","+str(m_tp_r_fn_per_min)+","+str(m_tp_r_fn_avg)+","+str(m_tp_r_fn_per_max)+","+str(m_tn_r_fp_per_min)+","+str(m_tn_r_fp_avg)+","+str(m_tn_r_fp_per_max)+",")
     f.write(str(s_tp_r_fn_per)+","+ str(s_tp_r_fn_per)+","+ str(s_tn_r_fp_per)+","+ str(s_tn_r_fp_per)+","+ str(r_tp_s_fn_per)+","+ str(r_tp_s_fn_per)+","+str(r_tn_s_fp_per)+","+str(r_tn_s_fp_per)+",")
-    f.write(str(s_tp_m_fn_per_min)+","+str(s_tp_m_fn_per_max)+","+str(s_tn_m_fp_per_min)+","+str(s_tn_m_fp_per_max)+","+str(m_tp_s_fn_per_min)+","+str(m_tp_s_fn_per_max)+","+str(m_tn_s_fp_per_min)+","+str(m_tn_s_fp_per_max))
+    f.write(str(s_tp_m_fn_per_min)+","+str(s_tp_m_fn_avg)+","+str(s_tp_m_fn_per_max)+","+str(s_tn_m_fp_per_min)+","+str(s_tn_m_fp_avg)+","+str(s_tn_m_fp_per_max)+","+str(m_tp_s_fn_per_min)+","+str(m_tp_s_fn_avg)+","+str(m_tp_s_fn_per_max)+","+str(m_tn_s_fp_per_min)+","+str(m_tn_s_fp_avg)+","+str(m_tn_s_fp_per_max))
     f.write("\n")
     f.close()
     
@@ -355,9 +363,9 @@ if __name__ == '__main__':
         
         f=open("Stats/OCSVM_Inconsistency_Max_Min.csv", "w")
         f.write('Filename,Mode,MatvR_Min,MatvR_Max,RvSk_Min,RvSk_Max,MatvSk_Min,MatvSk_Max,')
-        f.write("r_tp_m_fn_per_min"+","+ "r_tp_m_fn_per_max"+","+ "r_tn_m_fp_per_min_max"+","+ "r_tn_m_fp_per_max"+","+ "m_tp_r_fn_per_min"+","+ "m_tp_r_fn_per_max"+","+ "m_tn_r_fp_per_min"+","+ "m_tn_r_fp_per_max"+",")
-        f.write("s_tp_r_fn_per_min"+","+ "s_tp_r_fn_per_max"+","+ "s_tn_r_fp_per_min_max"+","+ "s_tn_r_fp_per_max"+","+ "r_tp_s_fn_per_min"+","+ "r_tp_s_fn_per_max"+","+ "r_tn_s_fp_per_min"+","+ "r_tn_s_fp_per_max"+",")
-        f.write("s_tp_m_fn_per_min"+","+ "s_tp_m_fn_per_max"+","+ "s_tn_m_fp_per_min_max"+","+ "s_tn_m_fp_per_max"+","+ "m_tp_s_fn_per_min"+","+ "m_tp_s_fn_per_max"+","+ "m_tn_s_fp_per_min"+","+ "m_tn_s_fp_per_max")
+        f.write("r_tp_m_fn_per_min,r_tp_m_fn_avg,r_tp_m_fn_per_max"+","+ "r_tn_m_fp_per_min,r_tn_m_fp_avg,r_tn_m_fp_per_max"+","+ "m_tp_r_fn_per_min,m_tp_r_fn_avg,m_tp_r_fn_per_max"+","+ "m_tn_r_fp_per_min,m_tn_r_fp_avg,m_tn_r_fp_per_max"+",")
+        f.write("s_tp_r_fn_per_min"+","+ "s_tp_r_fn_per_max"+","+ "s_tn_r_fp_per_min"+","+ "s_tn_r_fp_per_max"+","+ "r_tp_s_fn_per_min"+","+ "r_tp_s_fn_per_max"+","+ "r_tn_s_fp_per_min"+","+ "r_tn_s_fp_per_max"+",")
+        f.write("s_tp_m_fn_per_min,s_tp_m_fn_avg,s_tp_m_fn_per_max"+","+ "s_tn_m_fp_per_min,s_tn_m_fp_avg,s_tn_m_fp_per_max"+","+ "m_tp_s_fn_per_min,m_tp_s_fn_avg,m_tp_s_fn_per_max"+","+ "m_tn_s_fp_per_min,m_tn_s_fp_avg,m_tn_s_fp_per_max")
         f.write("\n")    
         f.close()
     
