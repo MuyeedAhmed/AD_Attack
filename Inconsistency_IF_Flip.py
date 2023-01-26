@@ -122,14 +122,8 @@ def isolationforest(filename):
     mvr, mvr_p, r_tp_m_fn, r_tp_m_fn_per, r_tn_m_fp, r_tn_m_fp_per, m_tp_r_fn, m_tp_r_fn_per, m_tn_r_fp, m_tn_r_fp_per = [], [], [], [], [], [], [], [], [], []
     rvs, rvs_p, s_tp_r_fn, s_tp_r_fn_per, s_tn_r_fp, s_tn_r_fp_per, r_tp_s_fn, r_tp_s_fn_per, r_tn_s_fp, r_tn_s_fp_per = [], [], [], [], [], [], [], [], [], []
 
-    print(len(labels_sk))
-    print(len(labels_mat))
-
     for m in range(runs):
-        for n in range(runs):
-            # print(i, j, end=' - ')
-            # print(len(labels_mat[j]), len(labels_sk[i]), end=" , ")
-            
+        for n in range(runs):            
             a,b,c,d,e,f,g,h,i,j = drawGraphs(gt, labels_sk[m], labels_mat[n])
             mvs.append(a)
             mvs_p.append(b)
@@ -152,8 +146,6 @@ def isolationforest(filename):
 
     for m in range(runs):
         for n in range(runs):
-            print(i, j, end=' - ')
-            # print(len(labels_mat[j]), len(labels_r[i]), end=" , ")
             a,b,c,d,e,f,g,h,i,j = drawGraphs(gt, np.int64((labels_r[m][1:])*1), labels_mat[n])
             mvr.append(a)
             mvr_p.append(b)
