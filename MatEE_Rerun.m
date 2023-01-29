@@ -86,7 +86,7 @@ function timeE = runEE(filename_with_extension, X, y, params, runs)
     
     outliersSet = [];
     timeElap = [];
-    try
+    %try
         for z = 1:runs
             tic
             if strcmp(p1, "fmcd") == 1
@@ -103,8 +103,8 @@ function timeE = runEE(filename_with_extension, X, y, params, runs)
             outliersSet = [outliersSet;outliers'];
         end
         csvwrite(labelFile,outliersSet); 
-    catch
-        fprintf("-Failed")
-    end
+    %catch
+     %   fprintf("-Failed")
+    %end
     timeE = mean(timeElap);
 end

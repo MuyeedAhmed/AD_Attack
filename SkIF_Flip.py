@@ -131,7 +131,6 @@ def drawGraphs(filename, gt, labels, runs, mode):
     ti_fo_per_all = ti_fo/inlier
     to_fi_per_all = to_fi/outlier
     
-    
     # f = plt.figure()
     # avgs = np.array(avgs)
     # sns.displot(avgs, kde=True, stat='count')
@@ -161,11 +160,11 @@ def drawGraphs(filename, gt, labels, runs, mode):
             runNumber50p = i
             break
 
-    # g = plt.figure
-    # plt.plot(variables_iter)
-    # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    # plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
-    # plt.show()
+    # # g = plt.figure
+    # # plt.plot(variables_iter)
+    # # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
+    # # plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
+    # # plt.show()
     
     g = plt.figure
     plt.plot(probability)
@@ -309,17 +308,18 @@ def drawGraphs(filename, gt, labels, runs, mode):
     rects1 = plt.bar(index, bar[0], bar_width,
     # alpha=opacity,
     # color='b',
-    label='TP to FN')
+    label='TI to FO')
     
     rects2 = plt.bar(index + bar_width, bar[1], bar_width,
     # alpha=opacity,
     # color='g',
-    label='TN to FP')
-    
+    label='TO to FI')
+    ax.fill(True)
     plt.xlabel('Runs')
     plt.ylabel('Flipped')
+    plt.xlim([-0.5,29])
     plt.legend()
-    plt.savefig("FlipFig/SkIF/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("FlipFig/tmp/"+filename+"_SkIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
 
     plt.tight_layout()
     plt.show()
@@ -358,9 +358,6 @@ def drawGraphs(filename, gt, labels, runs, mode):
                 if avg != 0 and avg != 1:
                     flippable_temp[n] = False
         f_g.append(f_g[-1] + flippedIn2Runs[minInd[0]][minInd[1]])
-    # print("-----")
-    # print(f_g)
-    # print(doneRun)
 
     f_g_percentage = [(x/flipped)*100 for x in f_g]
     
@@ -445,7 +442,7 @@ if __name__ == '__main__':
     #     master_files = [item for item in master_files if item not in done_files]
     # master_files.sort()
 
-    # optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
+    optimalSettingsUni = pd.read_csv("OptimalSettings/SkIF_Uni.csv")
     
     # if os.path.exists("Stats/SkIF.csv")==0:
     #     f=open("Stats/SkIF.csv", "w")
@@ -464,9 +461,9 @@ if __name__ == '__main__':
     #     optSettings[5] = None
     #     isolationforest(fname, optSettings)
               
-    # # # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
   
-    # # # isolationforest('breastw', optSettings)
+    isolationforest('breastw', optSettings)
     # # # isolationforest('breastw')
     # # # isolationforest("arsenic-female-lung")
     
@@ -479,18 +476,18 @@ if __name__ == '__main__':
     df['ti_fo_per_avg'] = df['ti_fo_per_avg'].apply(lambda x: x*100)
     df['to_fi_per_avg'] = df['to_fi_per_avg'].apply(lambda x: x*100)
     
-    df_def = df[df["Mode"] == 'Default'].sort_values(by=["FlippedPercentage"])
+    df_def = df[df["Mode"] == 'Default'].sort_values(by=["to_fi_per_all"])
     
     # df.rename(columns={"ti_fo_per_all": "a", "to_fi_per_all": "c", "ti_fo_per_avg":"", "to_fi_per_avg":""})
     
     
-    g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y='FlippedPercentage', figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
-    ax.patches[27].set_facecolor('red')
-    plt.savefig("FlipFig/SkIF_AllDataset_Default_Combined.pdf", bbox_inches="tight", pad_inches=0)
+    # g = plt.figure(figsize=(20, 5), dpi=80)
+    # ax = df_def.plot.bar(x='Filename', y='FlippedPercentage', figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
+    # ax.patches[27].set_facecolor('red')
+    # plt.savefig("FlipFig/SkIF_AllDataset_Default_Combined.pdf", bbox_inches="tight", pad_inches=0)
     
     g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_all','to_fi_per_all'], figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
+    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_all','to_fi_per_all'], figsize=(20, 5), width=1, legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
     # ax.patches[27].set_facecolor('red')
     ax.legend(["True Inlier -> False Outlier", "True Outlier -> False Inlier"])
     plt.savefig("FlipFig/SkIF_AllDataset_Default_Combined_Broken.pdf", bbox_inches="tight", pad_inches=0)
@@ -499,15 +496,15 @@ if __name__ == '__main__':
     
     
     
-    df_def = df[df["Mode"] == 'Default'].sort_values(by=["AvgFlippedPerRunPercentage"])
+    df_def = df[df["Mode"] == 'Default'].sort_values(by=["to_fi_per_avg"])
+    
+    # g = plt.figure(figsize=(20, 5), dpi=80)
+    # ax = df_def.plot.bar(x='Filename', y='AvgFlippedPerRunPercentage', figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
+    # ax.patches[27].set_facecolor('red')
+    # plt.savefig("FlipFig/SkIF_AllDataset_Default_Avg.pdf", bbox_inches="tight", pad_inches=0)
+    
     
     g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y='AvgFlippedPerRunPercentage', figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
-    ax.patches[27].set_facecolor('red')
-    plt.savefig("FlipFig/SkIF_AllDataset_Default_Avg.pdf", bbox_inches="tight", pad_inches=0)
-    
-    
-    g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_avg','to_fi_per_avg'], figsize=(20, 5), legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
+    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_avg','to_fi_per_avg'], figsize=(20, 5), width=1, legend=None, xticks=[], xlabel="Dataset", ylabel="Flipped Points (%)")
     ax.legend(["True Inlier -> False Outlier", "True Outlier -> False Inlier"])
     plt.savefig("FlipFig/SkIF_AllDataset_Default_Avg_Broken.pdf", bbox_inches="tight", pad_inches=0)

@@ -92,10 +92,10 @@ def ee(filename):
             eng.MatEE_Rerun(runs)
             if os.path.exists("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile_mat_default+".csv") == 0:      
                 print("\nFaild to run Matlab Engine from Python.\n")
-                exit(0)
+                return
         except:
             print("\nFaild to run Matlab Engine from Python.\n")
-            exit(0) 
+            return
     
     labels_mat = pd.read_csv("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile_mat_default+".csv", header=None).to_numpy()
     
@@ -150,11 +150,11 @@ def ee(filename):
             eng.MatEE_Rerun(runs)
             if os.path.exists("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile_mat_mod+".csv") == 0:      
                 print("\nFaild to run Matlab Engine from Python.\n")
-                exit(0)
+                return
         except:
             print("\nFaild to run Matlab Engine from Python.\n")
-            exit(0) 
-            
+            return
+        
     labels_mat = pd.read_csv("Labels/EE_Matlab/Labels_Mat_EE_"+labelFile_mat_mod+".csv", header=None).to_numpy()
     
     
