@@ -157,7 +157,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = y == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,0]
      ,x.loc[indicesToKeep,1]
-     ,s = 75, color='red')
+     ,s = 75, marker='X', color='red')
     plt.grid(False)
     # plt.xticks([])
     # plt.yticks([])
@@ -182,7 +182,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l1 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,0]
      ,x.loc[indicesToKeep,1]
-     ,s = 75, color='red')
+     ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -240,7 +240,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l2 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,0]
      ,x.loc[indicesToKeep,1]
-     ,s = 75, color='red')
+     ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -293,7 +293,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l3 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,0]
      ,x.loc[indicesToKeep,1]
-     ,s = 75, color='red')
+     ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -345,7 +345,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l4 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,0]
      ,x.loc[indicesToKeep,1]
-     ,s = 75, color='red')
+     ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
