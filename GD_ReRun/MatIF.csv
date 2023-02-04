@@ -1,1 +1,2 @@
 Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
+spambase,0.005,100,auto
