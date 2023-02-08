@@ -114,23 +114,23 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.title(filename, fontsize=15)
     
     # indicesToKeep = cat == 0
-    # plt0 = plt.scatter(x.loc[indicesToKeep,0]
-    #  ,x.loc[indicesToKeep,1]
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #  ,x.loc[indicesToKeep,0]
     #  ,s = 25, color='grey')
     
     # # indicesToKeep = cat == 1
-    # # plt1 = plt.scatter(x.loc[indicesToKeep,0]
-    # #  ,x.loc[indicesToKeep,1]
+    # # plt1 = plt.scatter(x.loc[indicesToKeep,1]
+    # #  ,x.loc[indicesToKeep,0]
     # #  ,s = 50, color='green')
     
     # indicesToKeep = cat == 2
-    # plt2 = plt.scatter(x.loc[indicesToKeep,0]
-    #  ,x.loc[indicesToKeep,1]
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #  ,x.loc[indicesToKeep,0]
     #  ,s = 50, color='blue')
     
     # indicesToKeep = cat == 3
-    # plt3 = plt.scatter(x.loc[indicesToKeep,0]
-    #  ,x.loc[indicesToKeep,1]
+    # plt3 = plt.scatter(x.loc[indicesToKeep,1]
+    #  ,x.loc[indicesToKeep,0]
     #  ,s = 50, color='red')
     
     
@@ -141,28 +141,27 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.xticks(fontsize = 25)
     # plt.yticks(fontsize = 25)
     
-    # # plt.savefig('Fig_InterTool_tsne/'+tool1+'_'+tool2+"_"+Algo+'_'+filename+'_default.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # # plt.savefig('Fig_InterTool_tsne/'+tool1+'_'+tool2+"_"+Algo+'_'+filename+'_default_Transpose.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     # plt.show()
 
+    
+    plt.rcParams['figure.figsize'] = [10, 5]
+    
     fig = plt.figure()
-    plt.rcParams['figure.figsize'] = [5, 10]
-    
-    # plt.title(filename, fontsize=15)
-    
     indicesToKeep = (y == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 50, color='green')
     
     indicesToKeep = y == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     plt.grid(False)
     # plt.xticks([])
     # plt.yticks([])
-    plt.xlim(0, 25)
-    plt.ylim(0, 10)
+    plt.ylim(0, 25)
+    plt.xlim(0, 10)
     
     plt.show()
 
@@ -170,28 +169,28 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     Original - L1 Run1
     '''
     fig = plt.figure()
-    plt.rcParams['figure.figsize'] = [5, 10]
+    # plt.rcParams['figure.figsize'] = [5, 10]
     
     # plt.title(filename, fontsize=15)
     
     indicesToKeep = (l1 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 50, color='green')
     
     indicesToKeep = l1 == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.xlim(5, 12)
-    plt.ylim(1, 7.5)
+    plt.ylim(5, 12)
+    plt.xlim(1, 7.5)
     
     plt.annotate("A: Outlier",
-            xy=(10.7, 6.95), xycoords='data',
-            xytext=(10.7, 7.4), textcoords='data',
+            xy=(6.95, 10.7), xycoords='data',
+            xytext=(7.4, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
@@ -224,31 +223,31 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.text(8.5, 2.6, "C: Outlier", fontsize=15)
     # plt.text(8.5, 2.2, "D: Inlier", fontsize=15)
     # plt.text(7.0, 1.2, "E: Outlier", fontsize=15)
-    plt.savefig('Fig/'+filename+'_SkIF_R1.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_R1_Transpose.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
 
     '''
     Restart - L2
     '''
     fig = plt.figure()
-    plt.rcParams['figure.figsize'] = [5, 10]
+    # plt.rcParams['figure.figsize'] = [5, 10]
     indicesToKeep = l2 == 0
-    plt0 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 50, color='green')
     
     indicesToKeep = l2 == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.xlim(5, 12)
-    plt.ylim(1, 7.5)
+    plt.ylim(5, 12)
+    plt.xlim(1, 7.5)
     plt.annotate("A: Inlier",
-            xy=(10.7, 6.95), xycoords='data',
-            xytext=(10.7, 7.4), textcoords='data',
+            xy=(6.95, 10.7), xycoords='data',
+            xytext=(7.4, 10.7), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
@@ -276,7 +275,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_SkIF_R2.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_R2_Transpose.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     
@@ -284,24 +283,24 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     Fast - L3
     '''
     fig = plt.figure()
-    plt.rcParams['figure.figsize'] = [5, 10]
+    # plt.rcParams['figure.figsize'] = [5, 10]
     indicesToKeep = l3 == 0
-    plt0 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 50, color='green')
     
     indicesToKeep = l3 == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.xlim(5, 12)
-    plt.ylim(1, 7.5)
+    plt.ylim(5, 12)
+    plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
-            xy=(10.7, 6.95), xycoords='data',
-            xytext=(10.7, 7.4), textcoords='data',
+            xy=(6.95, 10.7), xycoords='data',
+            xytext=(7.4, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
@@ -329,31 +328,31 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_SkIF_Fast.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_Fast_Transpose.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     '''
     Incon - L4
     '''
     fig = plt.figure()
-    plt.rcParams['figure.figsize'] = [5, 10]
+    # plt.rcParams['figure.figsize'] = [5, 10]
     indicesToKeep = l4 == 0
-    plt0 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 50, color='green')
     
     indicesToKeep = l4 == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,0]
-     ,x.loc[indicesToKeep,1]
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+     ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.xlim(5, 12)
-    plt.ylim(1, 7.5)
+    plt.ylim(5, 12)
+    plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
-            xy=(10.7, 6.95), xycoords='data',
-            xytext=(10.7, 7.4), textcoords='data',
+            xy=(6.95, 10.7), xycoords='data',
+            xytext=(7.4, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
@@ -381,7 +380,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_MatIF_Def.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_MatIF_Def_Transpose.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
 
 if __name__ == '__main__':
