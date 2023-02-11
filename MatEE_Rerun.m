@@ -86,12 +86,16 @@ function timeE = runEE(filename_with_extension, X, y, params, runs)
     
     outliersSet = [];
     timeElap = [];
-    %try
+    try
         for z = 1:runs
+            
             tic
             if strcmp(p1, "fmcd") == 1
-                [sig,mu,mah,outliers] = robustcov(X, Method=p1, OutlierFraction=p2, NumTrials=p3, BiasCorrection=p4);
-        
+                try
+                    [sig,mu,mah,outliers] = robustcov(X, Method=p1, OutlierFraction=p2, NumTrials=p3, BiasCorrection=p4);
+                catch
+                    z = z-1;
+                end
             elseif strcmp(p1, "ogk") == 1
                 [sig,mu,mah,outliers] = robustcov(X, Method=p1, NumOGKIterations=p5, UnivariateEstimator=p6);
             elseif strcmp(p1, "olivehawkins") == 1
@@ -101,10 +105,13 @@ function timeE = runEE(filename_with_extension, X, y, params, runs)
             t = toc;
             timeElap = [timeElap t];
             outliersSet = [outliersSet;outliers'];
+%             size(outliersSet)
+%             sum(outliers)
         end
         csvwrite(labelFile,outliersSet); 
-    %catch
-     %   fprintf("-Failed")
-    %end
+    catch
+       fprintf("-Failed")
+    end
     timeE = mean(timeElap);
+%     timeE = -1;
 end
