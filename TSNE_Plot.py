@@ -145,7 +145,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.show()
 
     
-    plt.rcParams['figure.figsize'] = [10, 5]
+    plt.rcParams['figure.figsize'] = [10, 4]
     
     fig = plt.figure()
     indicesToKeep = (y == 0)
@@ -185,36 +185,36 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.ylim(5, 12)
+    plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     
     plt.annotate("A: Outlier",
-            xy=(6.95, 10.7), xycoords='data',
-            xytext=(7.4, 10.7), textcoords='data',
+            xy=(6.92, 10.6), xycoords='data',
+            xytext=(6.92, 9.4), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
-            xy=(6.95, 2.75), xycoords='data',
-            xytext=(8, 3.2), textcoords='data',
+            xy=(2.75, 6.9), xycoords='data',
+            xytext=(3.5, 6.9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("C: Outlier",
-            xy=(7.4, 2.73), xycoords='data',
-            xytext=(9, 2.6), textcoords='data',
+            xy=(2.73, 7.4), xycoords='data',
+            xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Inlier",
-            xy=(6.2, 2.2), xycoords='data',
-            xytext=(8, 2.2), textcoords='data',
+            xy=(2.2, 6.1), xycoords='data',
+            xytext=(2.2, 8), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("E: Outlier",
-            xy=(6.5, 1.25), xycoords='data',
-            xytext=(8, 1.2), textcoords='data',
+            xy=(1.30, 6.4), xycoords='data',
+            xytext=(1.45, 7.5), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
@@ -243,35 +243,35 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.ylim(5, 12)
+    plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     plt.annotate("A: Inlier",
-            xy=(6.95, 10.7), xycoords='data',
-            xytext=(7.4, 10.7), textcoords='data',
+            xy=(6.92, 10.6), xycoords='data',
+            xytext=(6.92, 9.4), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
     plt.annotate("B: Inlier",
-            xy=(6.95, 2.75), xycoords='data',
-            xytext=(8, 3.2), textcoords='data',
+            xy=(2.75, 6.9), xycoords='data',
+            xytext=(3.5, 6.9), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("C: Outlier",
-            xy=(7.4, 2.73), xycoords='data',
-            xytext=(9, 2.6), textcoords='data',
+            xy=(2.73, 7.4), xycoords='data',
+            xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Inlier",
-            xy=(6.2, 2.2), xycoords='data',
-            xytext=(8, 2.2), textcoords='data',
+            xy=(2.2, 6.1), xycoords='data',
+            xytext=(2.2, 8), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("E: Inlier",
-            xy=(6.5, 1.25), xycoords='data',
-            xytext=(8, 1.2), textcoords='data',
+            xy=(1.30, 6.4), xycoords='data',
+            xytext=(1.45, 7.5), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
@@ -296,35 +296,35 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.ylim(5, 12)
+    plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
-            xy=(6.95, 10.7), xycoords='data',
-            xytext=(7.4, 10.7), textcoords='data',
+            xy=(6.92, 10.6), xycoords='data',
+            xytext=(6.92, 9.4), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
-            xy=(6.95, 2.75), xycoords='data',
-            xytext=(8, 3.2), textcoords='data',
+            xy=(2.75, 6.9), xycoords='data',
+            xytext=(3.5, 6.9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("C: Outlier",
-            xy=(7.4, 2.73), xycoords='data',
-            xytext=(9, 2.6), textcoords='data',
+            xy=(2.73, 7.4), xycoords='data',
+            xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Outlier",
-            xy=(6.2, 2.2), xycoords='data',
-            xytext=(8, 2.2), textcoords='data',
+            xy=(2.2, 6.1), xycoords='data',
+            xytext=(2.2, 8), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("E: Inlier",
-            xy=(6.5, 1.25), xycoords='data',
-            xytext=(8, 1.2), textcoords='data',
+            xy=(1.30, 6.4), xycoords='data',
+            xytext=(1.45, 7.5), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
@@ -348,35 +348,35 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.ylim(5, 12)
+    plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
-            xy=(6.95, 10.7), xycoords='data',
-            xytext=(7.4, 10.7), textcoords='data',
+            xy=(6.92, 10.6), xycoords='data',
+            xytext=(6.92, 9.4), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("B: Inlier",
-            xy=(6.95, 2.75), xycoords='data',
-            xytext=(8, 3.2), textcoords='data',
+            xy=(2.75, 6.9), xycoords='data',
+            xytext=(3.5, 6.9), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("C: Outlier",
-            xy=(7.4, 2.73), xycoords='data',
-            xytext=(9, 2.6), textcoords='data',
+            xy=(2.73, 7.4), xycoords='data',
+            xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Inlier",
-            xy=(6.2, 2.2), xycoords='data',
-            xytext=(8, 2.2), textcoords='data',
+            xy=(2.2, 6.1), xycoords='data',
+            xytext=(2.2, 8), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("E: Inlier",
-            xy=(6.5, 1.25), xycoords='data',
-            xytext=(8, 1.2), textcoords='data',
+            xy=(1.30, 6.4), xycoords='data',
+            xytext=(1.45, 7.5), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='green'
             )
