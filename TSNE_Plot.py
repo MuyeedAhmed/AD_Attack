@@ -189,34 +189,34 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.xlim(1, 7.5)
     
     plt.annotate("A: Outlier",
-            xy=(6.92, 10.6), xycoords='data',
-            xytext=(6.92, 9.4), textcoords='data',
+            xy=(6.85, 10.7), xycoords='data',
+            xytext=(4.8, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='red'
+            horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
-            xy=(2.75, 6.9), xycoords='data',
-            xytext=(3.5, 6.9), textcoords='data',
+            xy=(2.75, 6.93), xycoords='data',
+            xytext=(4.5, 6.93), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("C: Outlier",
-            xy=(2.73, 7.4), xycoords='data',
+            xy=(2.73, 7.3), xycoords='data',
             xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Inlier",
-            xy=(2.2, 6.1), xycoords='data',
-            xytext=(2.2, 8), textcoords='data',
+            xy=(2.2, 6.05), xycoords='data',
+            xytext=(4.2, 6.05), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("E: Outlier",
-            xy=(1.30, 6.4), xycoords='data',
-            xytext=(1.45, 7.5), textcoords='data',
+            xy=(1.3, 6.25), xycoords='data',
+            xytext=(1.3, 5.2), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='red'
+            horizontalalignment='left', verticalalignment='center', size = 15,color='red'
             )
     # plt.text(10, 7.1, "A: Outlier", fontsize=15)
     # plt.text(8.5, 3.0, "B: Outlier", fontsize=15)
@@ -246,34 +246,34 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     plt.annotate("A: Inlier",
-            xy=(6.92, 10.6), xycoords='data',
-            xytext=(6.92, 9.4), textcoords='data',
+            xy=(6.85, 10.7), xycoords='data',
+            xytext=(4.8, 10.7), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='green'
+            horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("B: Inlier",
-            xy=(2.75, 6.9), xycoords='data',
-            xytext=(3.5, 6.9), textcoords='data',
+            xy=(2.75, 6.93), xycoords='data',
+            xytext=(4.5, 6.93), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("C: Outlier",
-            xy=(2.73, 7.4), xycoords='data',
+            xy=(2.73, 7.3), xycoords='data',
             xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Inlier",
-            xy=(2.2, 6.1), xycoords='data',
-            xytext=(2.2, 8), textcoords='data',
+            xy=(2.2, 6.05), xycoords='data',
+            xytext=(4.2, 6.05), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("E: Inlier",
-            xy=(1.30, 6.4), xycoords='data',
-            xytext=(1.45, 7.5), textcoords='data',
+            xy=(1.3, 6.25), xycoords='data',
+            xytext=(1.3, 5.2), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='green'
+            horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
     plt.savefig('Fig/'+filename+'_SkIF_R2_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
@@ -299,34 +299,34 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.ylim(5, 11)
     plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
-            xy=(6.92, 10.6), xycoords='data',
-            xytext=(6.92, 9.4), textcoords='data',
+            xy=(6.85, 10.7), xycoords='data',
+            xytext=(4.8, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='red'
+            horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
-            xy=(2.75, 6.9), xycoords='data',
-            xytext=(3.5, 6.9), textcoords='data',
+            xy=(2.75, 6.93), xycoords='data',
+            xytext=(4.5, 6.93), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("C: Outlier",
-            xy=(2.73, 7.4), xycoords='data',
+            xy=(2.73, 7.3), xycoords='data',
             xytext=(2.73, 9), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='top', size = 15,color='red'
             )
     plt.annotate("D: Outlier",
-            xy=(2.2, 6.1), xycoords='data',
-            xytext=(2.2, 8), textcoords='data',
+            xy=(2.2, 6.05), xycoords='data',
+            xytext=(4.2, 6.05), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("E: Inlier",
-            xy=(1.30, 6.4), xycoords='data',
-            xytext=(1.45, 7.5), textcoords='data',
+            xy=(1.3, 6.25), xycoords='data',
+            xytext=(1.3, 5.2), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='top', size = 15,color='green'
+            horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
     plt.savefig('Fig/'+filename+'_SkIF_Fast_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
@@ -345,6 +345,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
      ,x.loc[indicesToKeep,0]
      ,s = 75, marker='X', color='red')
     # plt.grid(True)
+    plt.grid(False)
     plt.xticks([])
     plt.yticks([])
     plt.ylim(5, 11)
@@ -373,23 +374,11 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
-    # plt.annotate("E: Inlier",
-    #         xy=(1.30, 6.4), xycoords='data',
-    #         xytext=(1.75, 7.5), textcoords='data',
-    #         arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-    #         horizontalalignment='left', verticalalignment='top', size = 15,color='green'
-    #         )
-    # plt.annotate("E: Inlier",
-    #         xy=(1.30, 6.4), xycoords='data',
-    #         xytext=(1.75, 7.5), textcoords='data',
-    #         arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-    #         horizontalalignment='right', verticalalignment='bottom', size = 15,color='green'
-    #         )
     plt.annotate("E: Inlier",
-            xy=(1.30, 6.4), xycoords='data',
-            xytext=(1.75, 7.5), textcoords='data',
+            xy=(1.3, 6.25), xycoords='data',
+            xytext=(1.3, 5.2), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
-            horizontalalignment='center', verticalalignment='center_baseline', size = 15,color='green'
+            horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
     plt.savefig('Fig/'+filename+'_MatIF_Def_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
