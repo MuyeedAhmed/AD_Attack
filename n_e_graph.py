@@ -114,7 +114,7 @@ def isolationforest(filename):
     
     t_all = [0.04969595999999939, 0.09974557999999917, 0.15023724000000072, 0.1970731800000007, 0.24362298000000124, 0.29080861999999913, 0.3405281199999996, 0.3881066999999985, 0.4373698400000006, 0.49845322000000236]
     
-    fig,ax = plt.subplots()
+    fig,ax = plt.subplots(figsize=(10,4))
     # ax.grid(False)
 
     # make a plot
@@ -122,19 +122,19 @@ def isolationforest(filename):
             color="red", 
             marker="o")
     # set x-axis label
-    ax.set_xlabel("n_estimators", fontsize = 12)
+    ax.set_xlabel("n_estimators", fontsize = 15)
     # ax.set_xlabel("NumLearners", fontsize = 12)
     # set y-axis label
     # ax.set_ylabel("ARI",
     ax.set_ylabel("Flipped Points",
                   color="red",
-                  fontsize=12)
+                  fontsize=15)
     ax2=ax.twinx()
     ax2.grid(False)
 
     # make a plot with different y-axis using second axis object
     ax2.plot(n_e, t_all,color="blue",marker="o")
-    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=12)
+    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=15)
     plt.show()
     
     fig.savefig('Fig/n_e_graph.pdf', bbox_inches='tight')

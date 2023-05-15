@@ -52,26 +52,27 @@ def isolationforest(filename, optSettings):
     runs = 50
     
     parameters_default = [0.1, 100, 'auto']
-    parameters_fast = [optSettings[0], 50, 64]
-    ReRun_CSV(filename, parameters_default)
-    ReRun_CSV(filename, optSettings)
+    parameters_fast = [0.1, 50, 'auto']
     ReRun_CSV(filename, parameters_fast)
+    # ReRun_CSV(filename, parameters_default)
+    # ReRun_CSV(filename, optSettings)
+    # ReRun_CSV(filename, parameters_fast)
     
     time = eng.MatIF_Rerun(runs)
     print(time)
     '''
     Default
     '''
-    runIF(filename, X, gt, parameters_default, runs, 'Default', time[0][0])
+    # runIF(filename, X, gt, parameters_default, runs, 'Default', time)
 
     '''
     Optimal
     '''
-    runIF(filename, X, gt, optSettings, runs, "Optimal", time[0][1])
+    # runIF(filename, X, gt, optSettings, runs, "Optimal", time[0][1])
     '''
     Fast
     '''
-    runIF(filename, X, gt, parameters_fast, runs, 'Fast', time[0][2])
+    runIF(filename, X, gt, parameters_fast, runs, 'Fast', time)
     
 
 def ReRun_CSV(filename, params):
@@ -118,8 +119,7 @@ def drawGraphs(filename, gt, labels, runs, mode):
         else:
             flipped += 1
             flippable[i] = True
-    print("*****")
-    print(norms, outliers, flipped)
+    
     if flipped == 0:
         return flipped, -1, 0, 0, 0, 0, 0, 0
     
@@ -171,13 +171,13 @@ def drawGraphs(filename, gt, labels, runs, mode):
     # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_Count.pdf", bbox_inches="tight", pad_inches=0)
     # plt.show()
     
-    g = plt.figure
-    plt.plot(probability)
-    plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points (%)")
-    # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_Count_percentage.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # g = plt.figure
+    # plt.plot(probability)
+    # plt.xlabel("Run")
+    # plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    # # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_Count_percentage.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
     '''
     Flipped in a single run (mean)
@@ -211,227 +211,227 @@ def drawGraphs(filename, gt, labels, runs, mode):
     # print(mode, "- flipped in a single run ", avgFlippedPerRun, " - ", avgFlippedPerRun/len(labels[0]))
 
     
-    '''
-    Flipped in a single run sorted graph
-    '''
+    # '''
+    # Flipped in a single run sorted graph
+    # '''
     
-    # f_g = []
+    # # f_g = []
     
+    # # print("----")
+    # # while sum(flippable) != 0:
+    # #     flippedIn2Runs = np.array([[0]*runs for i in range(runs)])
+    # #     print(sum(flippable), end='')
+    # #     for i in range(runs):
+    # #         for j in range(i+1,runs):
+    # #             variables = 0
+    # #             for n in range(len(flippable)):
+    # #                 if flippable[n]:
+    # #                     s = labels[i][n] + labels[j][n]                
+    # #                     avg = s/2
+    # #                     if avg != 0 and avg != 1:
+    # #                         variables += 1
+    # #             flippedIn2Runs[i][j] = variables
+    # #     maxInd = unravel_index(flippedIn2Runs.argmax(), flippedIn2Runs.shape)
+    # #     for n in range(len(flippable)):
+    # #         if flippable[n]:
+    # #             s = labels[maxInd[0]][n] + labels[maxInd[1]][n]                
+    # #             avg = s/2
+    # #             if avg != 0 and avg != 1:
+    # #                 flippable[n] = False
+    # #     f_g.append(flippedIn2Runs[maxInd[0]][maxInd[1]])
+    # # print("-----")
+    # # print(f_g)
+    
+    # # f_g_percentage = [(x/flipped)*100 for x in f_g]
+    
+    # # g = plt.figure
+    # # plt.plot(f_g)
+    # # plt.xlabel("Run")
+    # # plt.ylabel("Discovered Flipped Points")
+    # # plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_FlippableVRun.pdf", bbox_inches="tight", pad_inches=0)
+    # # plt.show()
+
+    # # g = plt.figure
+    # # plt.plot(f_g_percentage)
+    # # plt.xlabel("Run")
+    # # plt.ylabel("Discovered Flipped Points Percentage")
+    # # plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage.pdf", bbox_inches="tight", pad_inches=0)
+    # # plt.show()
+    # '''
+    # Flipped in a single run unsorted
+    # '''
+    
+    # # flippedIn2Runs = []
+    
+    # # for i in range(runs-1):
+    # #     variables = 0
+    # #     for n in range(len(labels[0])):
+    # #         s = labels[i][n] + labels[i+1][n]                
+    # #         avg = s/2
+    # #         if avg != 0 and avg != 1:
+    # #             variables += 1
+    # #     flippedIn2Runs.append(variables)
+    
+    # # g = plt.figure
+    # # plt.plot(flippedIn2Runs)
+    # # plt.xlabel("Run")
+    # # plt.ylabel("Points Flipped")
+    # # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_rand.pdf", bbox_inches="tight", pad_inches=0)
+    # # plt.show()
+    
+    # '''
+    # Flipped in a single run unsorted barchart
+    # '''
+    
+    # # flippedIn2Runs = [0]
+    # flippedIn2Runs = np.array([[0]*2 for i in range(runs-1)])
+    # for i in range(runs-1):
+    #     variables = 0
+    #     tp_fn = 0
+    #     tn_fp = 0
+    #     for n in range(len(labels[0])):
+    #         s = labels[i][n] + labels[i+1][n]                
+    #         avg = s/2
+    #         if avg != 0 and avg != 1:
+    #             if labels[i][n] == 0:
+    #                 tp_fn += 1
+    #             else:
+    #                 tn_fp += 1
+                
+    #     flippedIn2Runs[i][0] = tp_fn
+    #     flippedIn2Runs[i][1] = tn_fp
+        
+    
+    # bar = flippedIn2Runs.reshape((2, runs-1))
+    # # create plot
+    # fig, ax = plt.subplots()
+    # ax.grid(False)
+    # index = np.arange(runs-1)
+    # bar_width = 0.5
+    # # opacity = 0
+    
+    # rects1 = plt.bar(index, bar[0], bar_width,
+    # # alpha=opacity,
+    # # color='b',
+    # label='TP to FN')
+    
+    # rects2 = plt.bar(index + bar_width, bar[1], bar_width,
+    # # alpha=opacity,
+    # # color='g',
+    # label='TN to FP')
+    
+    # plt.xlabel('Runs')
+    # plt.ylabel('Flipped')
+    # plt.legend()
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
+
+    # plt.tight_layout()
+    # plt.show()
+    
+    # '''
+    # Flipped in a single run sorted - asc
+    # '''
+    # f_g = [0]
+    # doneRun = []
+    # flippable_temp = flippable.copy()
     # print("----")
-    # while sum(flippable) != 0:
-    #     flippedIn2Runs = np.array([[0]*runs for i in range(runs)])
-    #     print(sum(flippable), end='')
+    # while sum(flippable_temp) != 0:
+    #     flippedIn2Runs = np.array([[99999]*runs for i in range(runs)])
+    #     print(sum(flippable_temp), end=' ')
     #     for i in range(runs):
     #         for j in range(i+1,runs):
+    #             if i in doneRun or j in doneRun:
+    #                 continue
     #             variables = 0
-    #             for n in range(len(flippable)):
-    #                 if flippable[n]:
+    #             for n in range(len(flippable_temp)):
+    #                 if flippable_temp[n]:
     #                     s = labels[i][n] + labels[j][n]                
     #                     avg = s/2
     #                     if avg != 0 and avg != 1:
     #                         variables += 1
     #             flippedIn2Runs[i][j] = variables
-    #     maxInd = unravel_index(flippedIn2Runs.argmax(), flippedIn2Runs.shape)
-    #     for n in range(len(flippable)):
-    #         if flippable[n]:
-    #             s = labels[maxInd[0]][n] + labels[maxInd[1]][n]                
+        
+    #     minInd = unravel_index(flippedIn2Runs.argmin(), flippedIn2Runs.shape)
+    #     doneRun.append(minInd[0])
+    #     # if flippedIn2Runs[minInd[0]][minInd[1]] == 0:
+    #     #     continue
+    #     for n in range(len(flippable_temp)):
+    #         if flippable_temp[n]:
+    #             s = labels[minInd[0]][n] + labels[minInd[1]][n]                
     #             avg = s/2
     #             if avg != 0 and avg != 1:
-    #                 flippable[n] = False
-    #     f_g.append(flippedIn2Runs[maxInd[0]][maxInd[1]])
-    # print("-----")
-    # print(f_g)
-    
+    #                 flippable_temp[n] = False
+    #     f_g.append(f_g[-1] + flippedIn2Runs[minInd[0]][minInd[1]])
+    # # print("-----")
+    # # print(f_g)
+    # # print(doneRun)
+
     # f_g_percentage = [(x/flipped)*100 for x in f_g]
     
     # g = plt.figure
     # plt.plot(f_g)
     # plt.xlabel("Run")
-    # plt.ylabel("Discovered Flipped Points")
-    # plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_FlippableVRun.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.ylabel("Previously Uniscovered Flipped Points")
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_asc.pdf", bbox_inches="tight", pad_inches=0)
     # plt.show()
 
     # g = plt.figure
     # plt.plot(f_g_percentage)
     # plt.xlabel("Run")
-    # plt.ylabel("Discovered Flipped Points Percentage")
-    # plt.savefig("FlipFig/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage.pdf", bbox_inches="tight", pad_inches=0)
-    # plt.show()
-    '''
-    Flipped in a single run unsorted
-    '''
-    
-    # flippedIn2Runs = []
-    
-    # for i in range(runs-1):
-    #     variables = 0
-    #     for n in range(len(labels[0])):
-    #         s = labels[i][n] + labels[i+1][n]                
-    #         avg = s/2
-    #         if avg != 0 and avg != 1:
-    #             variables += 1
-    #     flippedIn2Runs.append(variables)
-    
-    # g = plt.figure
-    # plt.plot(flippedIn2Runs)
-    # plt.xlabel("Run")
-    # plt.ylabel("Points Flipped")
-    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_rand.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
     # plt.show()
     
-    '''
-    Flipped in a single run unsorted barchart
-    '''
     
-    # flippedIn2Runs = [0]
-    flippedIn2Runs = np.array([[0]*2 for i in range(runs-1)])
-    for i in range(runs-1):
-        variables = 0
-        tp_fn = 0
-        tn_fp = 0
-        for n in range(len(labels[0])):
-            s = labels[i][n] + labels[i+1][n]                
-            avg = s/2
-            if avg != 0 and avg != 1:
-                if labels[i][n] == 0:
-                    tp_fn += 1
-                else:
-                    tn_fp += 1
-                
-        flippedIn2Runs[i][0] = tp_fn
-        flippedIn2Runs[i][1] = tn_fp
+    # '''
+    # Flipped in a single run sorted - dsc
+    # '''
+    # f_g = [0]
+    # doneRun = []
+    # flippable_temp = flippable.copy()
+    # print("\n----")
+    # # while sum(flippable_temp) != 0:
+    # for _ in range(runs-1):
+    #     flippedIn2Runs = np.array([[0]*runs for i in range(runs)])
+    #     print(sum(flippable_temp), end=' ')
+    #     for i in range(runs):
+    #         for j in range(i+1,runs):
+    #             if i in doneRun or j in doneRun:
+    #                 continue
+    #             variables = 0
+    #             for n in range(len(flippable_temp)):
+    #                 if flippable_temp[n] and labels[i][n] != labels[j][n]:
+    #                     variables += 1
+    #             flippedIn2Runs[i][j] = variables
         
-    
-    bar = flippedIn2Runs.reshape((2, runs-1))
-    # create plot
-    fig, ax = plt.subplots()
-    ax.grid(False)
-    index = np.arange(runs-1)
-    bar_width = 0.5
-    # opacity = 0
-    
-    rects1 = plt.bar(index, bar[0], bar_width,
-    # alpha=opacity,
-    # color='b',
-    label='TP to FN')
-    
-    rects2 = plt.bar(index + bar_width, bar[1], bar_width,
-    # alpha=opacity,
-    # color='g',
-    label='TN to FP')
-    
-    plt.xlabel('Runs')
-    plt.ylabel('Flipped')
-    plt.legend()
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_rand_pn_bar.pdf", bbox_inches="tight", pad_inches=0)
-
-    plt.tight_layout()
-    plt.show()
-    
-    '''
-    Flipped in a single run sorted - asc
-    '''
-    f_g = [0]
-    doneRun = []
-    flippable_temp = flippable.copy()
-    print("----")
-    while sum(flippable_temp) != 0:
-        flippedIn2Runs = np.array([[99999]*runs for i in range(runs)])
-        print(sum(flippable_temp), end=' ')
-        for i in range(runs):
-            for j in range(i+1,runs):
-                if i in doneRun or j in doneRun:
-                    continue
-                variables = 0
-                for n in range(len(flippable_temp)):
-                    if flippable_temp[n]:
-                        s = labels[i][n] + labels[j][n]                
-                        avg = s/2
-                        if avg != 0 and avg != 1:
-                            variables += 1
-                flippedIn2Runs[i][j] = variables
-        
-        minInd = unravel_index(flippedIn2Runs.argmin(), flippedIn2Runs.shape)
-        doneRun.append(minInd[0])
-        # if flippedIn2Runs[minInd[0]][minInd[1]] == 0:
-        #     continue
-        for n in range(len(flippable_temp)):
-            if flippable_temp[n]:
-                s = labels[minInd[0]][n] + labels[minInd[1]][n]                
-                avg = s/2
-                if avg != 0 and avg != 1:
-                    flippable_temp[n] = False
-        f_g.append(f_g[-1] + flippedIn2Runs[minInd[0]][minInd[1]])
-    # print("-----")
+    #     maxInd = unravel_index(flippedIn2Runs.argmax(), flippedIn2Runs.shape)
+    #     doneRun.append(maxInd[0])
+    #     # if flippedIn2Runs[maxInd[0]][maxInd[1]] == 0:
+    #     #     continue
+    #     for n in range(len(flippable_temp)):
+    #         if flippable_temp[n]:
+    #             if labels[maxInd[0]][n] != labels[maxInd[1]][n]:
+    #                 flippable_temp[n] = False
+    #     f_g.append(f_g[-1] + flippedIn2Runs[maxInd[0]][maxInd[1]])
+    # print("\n-----")
     # print(f_g)
     # print(doneRun)
 
-    f_g_percentage = [(x/flipped)*100 for x in f_g]
+    # f_g_percentage = [(x/flipped)*100 for x in f_g]
     
-    g = plt.figure
-    plt.plot(f_g)
-    plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points")
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_asc.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # g = plt.figure
+    # plt.plot(f_g)
+    # plt.xlabel("Run")
+    # plt.ylabel("Previously Uniscovered Flipped Points")
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_dsc.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
 
-    g = plt.figure
-    plt.plot(f_g_percentage)
-    plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points (%)")
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
-    
-    
-    '''
-    Flipped in a single run sorted - dsc
-    '''
-    f_g = [0]
-    doneRun = []
-    flippable_temp = flippable.copy()
-    print("\n----")
-    # while sum(flippable_temp) != 0:
-    for _ in range(runs-1):
-        flippedIn2Runs = np.array([[0]*runs for i in range(runs)])
-        print(sum(flippable_temp), end=' ')
-        for i in range(runs):
-            for j in range(i+1,runs):
-                if i in doneRun or j in doneRun:
-                    continue
-                variables = 0
-                for n in range(len(flippable_temp)):
-                    if flippable_temp[n] and labels[i][n] != labels[j][n]:
-                        variables += 1
-                flippedIn2Runs[i][j] = variables
-        
-        maxInd = unravel_index(flippedIn2Runs.argmax(), flippedIn2Runs.shape)
-        doneRun.append(maxInd[0])
-        # if flippedIn2Runs[maxInd[0]][maxInd[1]] == 0:
-        #     continue
-        for n in range(len(flippable_temp)):
-            if flippable_temp[n]:
-                if labels[maxInd[0]][n] != labels[maxInd[1]][n]:
-                    flippable_temp[n] = False
-        f_g.append(f_g[-1] + flippedIn2Runs[maxInd[0]][maxInd[1]])
-    print("\n-----")
-    print(f_g)
-    print(doneRun)
-
-    f_g_percentage = [(x/flipped)*100 for x in f_g]
-    
-    g = plt.figure
-    plt.plot(f_g)
-    plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points")
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_dsc.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
-
-    g = plt.figure
-    plt.plot(f_g_percentage)
-    plt.xlabel("Run")
-    plt.ylabel("Previously Uniscovered Flipped Points (%)")
-    plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # g = plt.figure
+    # plt.plot(f_g_percentage)
+    # plt.xlabel("Run")
+    # plt.ylabel("Previously Uniscovered Flipped Points (%)")
+    # plt.savefig("FlipFig/MatIF/"+filename+"_MatIF_"+mode+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
     return flipped, runNumber50p, avgFlippedPerRun, avgFlippedPerRun/len(labels[0]), ti_fo_per_all, to_fi_per_all, ti_fo_per_avg, to_fi_per_avg
     
@@ -463,12 +463,10 @@ if __name__ == '__main__':
         frr=open("GD_ReRun/MatIF.csv", "w")
         frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
         frr.close()
-        
-        try:
-            optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
-            isolationforest(fname, optSettings)
-        except:
-            print(fname, "doesn't exist")
+        # if fname == 'smapbase':
+        #     continue
+        # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == fname].to_numpy()[0][1:]
+        isolationforest(fname, [])
     eng.quit()
     
     # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]

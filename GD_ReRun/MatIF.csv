@@ -1,2 +1,2 @@
 Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
-spambase,0.005,100,auto
+wine,0.1,50,auto
