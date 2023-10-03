@@ -142,5 +142,8 @@ if __name__ == '__main__':
         
     runs = 10
     for fname in master_files:
+        if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
+            print(fname, " already done!")
+            continue
         X, gt = ReadFile(fname)
         runEE(fname, X, gt, runs)
