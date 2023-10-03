@@ -9,6 +9,9 @@ import warnings
 warnings.filterwarnings("ignore")
 import pandas as pd
 from sklearn.ensemble import IsolationForest
+from sklearn.neighbors import LocalOutlierFactor
+import matlab.engine
+    
 # from sklearn.svm import OneClassSVM
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
@@ -56,7 +59,7 @@ def calculateAccuracy(filename, Algo):
     
     # drawPlot(filename, Algo, "Matlab", "R", X_embedded, gt)
     # drawPlot(filename, Algo, "Sklearn", "R", X_embedded, gt)
-    drawPlot(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
+    drawPlot_full(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
 
 
 def runAlgo(filename, X):
@@ -223,7 +226,9 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.text(8.5, 2.6, "C: Outlier", fontsize=15)
     # plt.text(8.5, 2.2, "D: Inlier", fontsize=15)
     # plt.text(7.0, 1.2, "E: Outlier", fontsize=15)
-    plt.savefig('Fig/'+filename+'_SkIF_R1_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    
+    
+    # plt.savefig('Fig/'+filename+'_SkIF_R1_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
 
     '''
@@ -275,7 +280,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_SkIF_R2_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.savefig('Fig/'+filename+'_SkIF_R2_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     
@@ -328,7 +333,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_SkIF_Fast_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.savefig('Fig/'+filename+'_SkIF_Fast_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     '''
@@ -380,9 +385,229 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    plt.savefig('Fig/'+filename+'_MatIF_Def_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.savefig('Fig/'+filename+'_MatIF_Def_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
 
+
+
+def runAlgo_restart(filename, algo, X):
+    
+    if algo == "IF":
+        clustering1 = IsolationForest(random_state=42).fit(X)
+        clustering2 = IsolationForest(random_state=400).fit(X)
+        clustering3 = IsolationForest(random_state=800).fit(X)
+        clustering4 = IsolationForest(random_state=1).fit(X)
+        l1 = clustering1.predict(X)
+        l1 = [0 if x == 1 else 1 for x in l1]
+        l2 = clustering2.predict(X)
+        l2 = [0 if x == 1 else 1 for x in l2]
+        l3 = clustering3.predict(X)
+        l3 = [0 if x == 1 else 1 for x in l3]
+        l4 = clustering4.predict(X)
+        l4 = [0 if x == 1 else 1 for x in l4]
+    elif algo == "LOF":
+        labels_lof = LocalOutlierFactor().fit_predict(X)
+        l1 = [0 if x == 1 else 1 for x in labels_lof]
+        l2 = l1
+        l3 = l1
+        l4 = l1
+    return np.array(l1), np.array(l2), np.array(l3), np.array(l4)
+
+def runAlgo_resource_incon(filename, algo, X):
+    eng = matlab.engine.start_matlab()
+    
+    if algo=="IF":
+        clustering1 = IsolationForest(n_estimators=50, max_samples=64, random_state=42).fit(X)
+        clustering2 = IsolationForest(n_estimators=50, max_samples=64, random_state=400).fit(X)
+        clustering3 = IsolationForest(n_estimators=50, max_samples=64, random_state=800).fit(X)
+        clustering4 = IsolationForest(n_estimators=50, max_samples=64, random_state=1).fit(X)
+        
+        l1 = clustering1.predict(X)
+        l1 = [0 if x == 1 else 1 for x in l1]
+        l2 = clustering2.predict(X)
+        l2 = [0 if x == 1 else 1 for x in l2]
+        l3 = clustering3.predict(X)
+        l3 = [0 if x == 1 else 1 for x in l3]
+        l4 = clustering3.predict(X)
+        l4 = [0 if x == 1 else 1 for x in l4]
+        
+        
+        params = [0.005, 100, 'auto']
+        frr=open("GD_ReRun/MatIF.csv", "w")
+        frr.write('Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner\n')
+        frr.write(filename+","+str(params[0])+","+str(params[1])+","+str(params[2])+'\n')
+        frr.close()
+    
+        eng.MatIF_Rerun(1)
+        eng.quit()
+    
+        labelFile = filename + "_" + str(params[0]) + "_" + str(params[1]) + "_" + str(params[2])
+        
+        if os.path.exists("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv"):
+            labels =  pd.read_csv("Labels/IF_Matlab/Labels_Mat_IF_"+labelFile+".csv", header=None).to_numpy()
+            li = labels[0]
+        else:
+            return
+    elif algo == "LOF":
+        lof_cont, labels_sk = LOF_ContFactor(X)
+    
+        f = open("GD_ReRun/LOF.csv", "w")
+        f.write(filename+","+str(lof_cont))
+        f.close()
+        if os.path.exists("Labels/LOF_Matlab/"+filename+"_Default.csv") == 0:        
+            try:
+                eng.MatLOF_Rerun(nargout=0)
+                if os.path.exists("Labels/LOF_Matlab/"+filename+"_Default.csv") == 0:      
+                    print("\nFaild to run Matlab Engine from Python.\n")
+                    exit(0)
+            except:
+                print("\nFaild to run Matlab Engine from Python.\n")
+                exit(0) 
+        labels = pd.read_csv("Labels/LOF_Matlab/"+filename+"_Default.csv", header=None).to_numpy()
+        li = labels[0]
+        l1 = []
+        l2 = []
+        l3 = []
+        l4 = []
+
+    return np.array(l1),np.array(l2),np.array(l3),np.array(l4), np.array(li)
+
+def LOF_ContFactor(X):
+    labels_lof = LocalOutlierFactor().fit_predict(X)
+    labels_lof = [0 if x == 1 else 1 for x in labels_lof]
+    num_label = len(labels_lof)
+    _, counts_lof = np.unique(labels_lof, return_counts=True)
+    lof_per = min(counts_lof)/(num_label)
+    
+    if lof_per == 1:
+        lof_per = 0
+    
+    return lof_per, labels_lof
+def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
+    """Restart"""
+    l1, l2, l3, l4 = runAlgo_restart(filename, Algo, X)
+    
+    l1_l2_xor = np.logical_xor(l1,l2)
+    l_r1 = l1_l2_xor
+    
+    l2_l3_xor = np.logical_xor(l2,l3)
+    l_r2 = np.logical_or(l_r1, l2_l3_xor)
+    
+    l3_l4_xor = np.logical_xor(l3,l4)
+    l_r3 = np.logical_or(l_r2, l3_l4_xor)
+    
+    plt.rcParams['figure.figsize'] = [5,3]
+    
+    # L1-L2
+    
+    fig = plt.figure()
+    indicesToKeep = (l_r1 == 0)
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 25, facecolors='none', edgecolor='black', label="")
+    
+    indicesToKeep = (l_r1 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
+    plt.grid(False)
+    plt.xticks([])
+    plt.yticks([])
+    plt.legend()    
+    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_1.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.show()
+    
+    # L2-L3
+    
+    fig = plt.figure()
+    indicesToKeep = (l_r2 == 0)
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 25, facecolors='none', edgecolor='black', label="")
+    
+    indicesToKeep = (l_r2 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
+    plt.grid(False)
+    plt.xticks([])
+    plt.yticks([])
+    plt.legend()
+    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_2.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.show()
+    
+    #L3-L4
+    fig = plt.figure()
+    indicesToKeep = (l_r3 == 0)
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 25, facecolors='none', edgecolor='black', label="")
+    
+    indicesToKeep = (l_r3 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
+    plt.grid(False)
+    plt.xticks([])
+    plt.yticks([])
+    plt.legend()
+
+    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_3.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.show()
+    
+    ''' Resource '''
+    
+    l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
+    
+    l1f_l2f_xor = np.logical_xor(l1f,l2f)
+    lf_r1 = l1f_l2f_xor
+    
+    l2f_l3f_xor = np.logical_xor(l2f,l3f)
+    lf_r2 = np.logical_or(lf_r1, l2f_l3f_xor)
+    
+    l3f_l4f_xor = np.logical_xor(l3f,l4f)
+    lf_r3 = np.logical_or(lf_r2, l3f_l4f_xor)
+    
+    
+    fig = plt.figure()
+    indicesToKeep = (lf_r3 == 0)
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 25, facecolors='none', edgecolor='black', label="")
+    
+    indicesToKeep = (lf_r3 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
+    plt.grid(False)
+    plt.xticks([])
+    plt.yticks([])
+    plt.legend()
+    plt.savefig('Fig/TSNE/Resource_'+filename+'_Sk'+Algo+'.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.show()
+    
+    """Inconsistency"""
+    
+    # l1_li_xor = np.logical_xor(l1,li)
+    # fig = plt.figure()
+    # indicesToKeep = (l1_li_xor == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 25, facecolors='none', edgecolor='black', label="")
+    
+    # indicesToKeep = (l1_li_xor == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend()
+    
+    # plt.savefig('Fig/TSNE/I_'+Algo+'_'+filename+'_SkMat.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
+    
+    
 if __name__ == '__main__':
     folderpath = 'Dataset/'
     master_files = glob.glob(folderpath+"*.mat")
@@ -391,14 +616,16 @@ if __name__ == '__main__':
         master_files[i] = master_files[i].split("/")[-1].split(".")[0]
     master_files.sort()
 
-    # Algos = ["EE", "IF", "LF", "OCSVM"]
+    Algos = ["EE", "IF", "LF", "OCSVM"]
+    Algos = ["IF"]
+
     # for Algo in Algos:    
     #     for FileNumber in range(len(master_files)):
     #         calculateAccuracy(master_files[FileNumber], Algo)
-    # calculateAccuracy("arsenic-male-lung", "IF")
+    # calculateAccuracy("ionosphere", "LOF")
         
-    calculateAccuracy("spambase", "IF")
-        
+    # calculateAccuracy("fertility", "IF")
+    calculateAccuracy("glass", "IF")
 
 
 
