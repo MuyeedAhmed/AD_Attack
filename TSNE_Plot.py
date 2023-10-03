@@ -509,7 +509,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = (l_r1 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
+      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -528,7 +528,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = (l_r2 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
+      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -557,7 +557,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     
     ''' Resource '''
     
-    # l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
+    l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
     
     # l1f_l2f_xor = np.logical_xor(l1f,l2f)
     # lf_r1 = l1f_l2f_xor
@@ -578,7 +578,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     # indicesToKeep = (lf_r3 == 1)
     # plt2 = plt.scatter(x.loc[indicesToKeep,1]
     #   ,x.loc[indicesToKeep,0]
-    #   ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
+    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
     # plt.grid(False)
     # plt.xticks([])
     # plt.yticks([])
@@ -588,24 +588,24 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     
     """Inconsistency"""
     
-    # l1_li_xor = np.logical_xor(l1,li)
-    # fig = plt.figure()
-    # indicesToKeep = (l1_li_xor == 0)
-    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
-    #   ,x.loc[indicesToKeep,0]
-    #   ,s = 25, facecolors='none', edgecolor='black', label="")
+    l1_li_xor = np.logical_xor(l1,li)
+    fig = plt.figure()
+    indicesToKeep = (l1_li_xor == 0)
+    plt0 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 25, facecolors='none', edgecolor='black', label="")
     
-    # indicesToKeep = (l1_li_xor == 1)
-    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
-    #   ,x.loc[indicesToKeep,0]
-    #   ,s = 75, marker='X', facecolors='grey', edgecolor='black', label="Flipped")
-    # plt.grid(False)
-    # plt.xticks([])
-    # plt.yticks([])
-    # plt.legend()
+    indicesToKeep = (l1_li_xor == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
+    plt.grid(False)
+    plt.xticks([])
+    plt.yticks([])
+    plt.legend()
     
-    # plt.savefig('Fig/TSNE/I_'+Algo+'_'+filename+'_SkMat.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    # plt.show()
+    plt.savefig('Fig/TSNE/I_'+Algo+'_'+filename+'_SkMat.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.show()
     
     
 if __name__ == '__main__':
@@ -624,7 +624,7 @@ if __name__ == '__main__':
     #         calculateAccuracy(master_files[FileNumber], Algo)
     # calculateAccuracy("ionosphere", "LOF")
         
-    calculateAccuracy("fertility", "IF")
+    # calculateAccuracy("fertility", "IF")
     # calculateAccuracy("glass", "IF")
 
 
