@@ -57,11 +57,17 @@ def ReadFile(filename):
 def runEE(filename, X, gt, runs):
     times = []
     flips = []
+    aris = []
+    m_aris = []
     print("Rows: ", len(X))
     sfs = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-    for sf in sfs:    
+    # sfs = [0.1]
+    for sf in sfs:
+        print(sf, end=",")
         labels = []
         timeElapsed = []
+        ari = []
+        m_ari =[]
         for i in range(runs):
             #time
             t1_start = process_time()
@@ -73,42 +79,60 @@ def runEE(filename, X, gt, runs):
     
             l = clustering.predict(X)
             l = [0 if x == 1 else 1 for x in l]
+            ari.append(adjusted_rand_score(gt, l))
             labels.append(l)
-        avgTimeElapsed = sum(timeElapsed)/len(timeElapsed)
+        for i in range(len(labels)):
+            for j in range(i+1, len(labels)):            
+                m_ari.append(adjusted_rand_score(labels[i], labels[j]))
         
+        avgTimeElapsed = sum(timeElapsed)/len(timeElapsed)
+        aris.append(np.mean(ari))
+        m_aris.append(np.mean(m_ari))
         flipped = flip_count(filename, gt, labels, runs)
         times.append(avgTimeElapsed)
         flips.append(flipped)
+    print()
     print(times)
     print(flips)
-    draw(filename, sfs,flips,times)
+    print(aris)
+    print(m_aris)
+    draw(filename, sfs,flips,times, aris, m_aris)
 
-def draw(filename, sfs, f, t):
+def draw(filename, sfs, f, t, a, ma):
+    f = f/(np.max(f))
+    a = [(x-np.min(a))/(np.max(a) - np.min(a)) for x in a]
+    ma = [(x-np.min(ma))/(np.max(ma) - np.min(ma)) for x in ma]
+        
     fig,ax = plt.subplots()
-    # ax.grid(False)
-
-    # make a plot
-    ax.plot(sfs, f,
-            color="red", 
-            marker="o")
-    # set x-axis label
+    
+    plt1 = ax.plot(sfs, f, color="red", marker="o", label="Flips")
+    plt2 = ax.plot(sfs, a, color="orange", marker='o', label="ARI")
+    plt3 = ax.plot(sfs, ma, color="green", marker='o', label="Mutual ARI")
+    
     ax.set_xlabel("support_fraction", fontsize = 12)
-    # ax.set_xlabel("NumLearners", fontsize = 12)
-    # set y-axis label
-    # ax.set_ylabel("ARI",
-    ax.set_ylabel("Flipped Points",
-                  color="red",
-                  fontsize=12)
+    ax.set_ylabel("Vulnerability", color="red", fontsize=12)
+    
+    
+    
     ax2=ax.twinx()
     ax2.grid(False)
 
     # make a plot with different y-axis using second axis object
-    ax2.plot(sfs, t,color="blue",marker="o")
+    plt3 = ax2.plot(sfs, t,color="blue",marker="o")
     ax2.set_ylabel("Time (seconds)",color="blue",fontsize=12)
+    ax.legend()
     plt.show()
     
-    fig.savefig('Fig/Time/SkEE_'+filename+'.pdf', bbox_inches='tight')
-    
+    # fig.savefig('Fig/Time/SkEE_'+filename+'.pdf', bbox_inches='tight')
+
+sfs = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+tt = [0.7555669999999985, 0.7542099, 0.7787064000000001, 0.8093423999999985, 0.7836930000000024, 0.7779766999999964, 0.7921503000000001, 0.8128416999999999, 0.8052817000000004]
+ff = [33, 4, 5, 0, 6, 4, 6, 3, 5]
+aa = [0.032293785658586406, 0.029256153818515134, 0.02382069494719217, 0.032864422379966014, 0.034553276514958195, 0.039268234475448326, 0.03892815804553522, 0.0362075466062304, 0.026673878554090223]
+mma = [0.904130834504301, 0.9902547576701362, 0.9471428413980081, 1.0, 0.9692982558045985, 0.9918002945853023, 0.9781667423646448, 0.9906289080974885, 0.9855528999836279]
+
+draw("pima", sfs, ff, tt, aa, mma)    
+
 def flip_count(filename, gt, labels, runs):
     '''Flip Summary'''
     norms = 0
@@ -142,8 +166,13 @@ if __name__ == '__main__':
         
     runs = 10
     for fname in master_files:
-        if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
-            print(fname, " already done!")
+        # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
+        #     # print(fname, " already done!")
+        #     continue
+        if fname != 'KnuggetChase3':
             continue
         X, gt = ReadFile(fname)
         runEE(fname, X, gt, runs)
+        
+        
+        

@@ -496,7 +496,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     l3_l4_xor = np.logical_xor(l3,l4)
     l_r3 = np.logical_or(l_r2, l3_l4_xor)
     
-    plt.rcParams['figure.figsize'] = [5,3]
+    plt.rcParams['figure.figsize'] = [5,5]
     
     # L1-L2
     
@@ -546,7 +546,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = (l_r3 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
+      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -557,34 +557,34 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     
     ''' Resource '''
     
-    l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
+    # l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
     
-    l1f_l2f_xor = np.logical_xor(l1f,l2f)
-    lf_r1 = l1f_l2f_xor
+    # l1f_l2f_xor = np.logical_xor(l1f,l2f)
+    # lf_r1 = l1f_l2f_xor
     
-    l2f_l3f_xor = np.logical_xor(l2f,l3f)
-    lf_r2 = np.logical_or(lf_r1, l2f_l3f_xor)
+    # l2f_l3f_xor = np.logical_xor(l2f,l3f)
+    # lf_r2 = np.logical_or(lf_r1, l2f_l3f_xor)
     
-    l3f_l4f_xor = np.logical_xor(l3f,l4f)
-    lf_r3 = np.logical_or(lf_r2, l3f_l4f_xor)
+    # l3f_l4f_xor = np.logical_xor(l3f,l4f)
+    # lf_r3 = np.logical_or(lf_r2, l3f_l4f_xor)
     
     
-    fig = plt.figure()
-    indicesToKeep = (lf_r3 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="")
+    # fig = plt.figure()
+    # indicesToKeep = (lf_r3 == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 25, facecolors='none', edgecolor='black', label="")
     
-    indicesToKeep = (lf_r3 == 1)
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend()
-    plt.savefig('Fig/TSNE/Resource_'+filename+'_Sk'+Algo+'.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # indicesToKeep = (lf_r3 == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 75, marker='X', facecolors='red', edgecolor='black', label="Flipped")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend()
+    # plt.savefig('Fig/TSNE/Resource_'+filename+'_Sk'+Algo+'.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
     """Inconsistency"""
     
@@ -624,7 +624,7 @@ if __name__ == '__main__':
     #         calculateAccuracy(master_files[FileNumber], Algo)
     # calculateAccuracy("ionosphere", "LOF")
         
-    # calculateAccuracy("fertility", "IF")
+    calculateAccuracy("fertility", "IF")
     # calculateAccuracy("glass", "IF")
 
 
