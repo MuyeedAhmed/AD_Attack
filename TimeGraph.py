@@ -24,7 +24,7 @@ warnings.filterwarnings(action='ignore')
 datasetFolderDir = 'Dataset/'
 
 implementation = "SkIF"
-parameter_st = "n_estimators"
+parameter_st = "max_samples"
 
 def ReadFile(filename):
     print(filename)
@@ -67,9 +67,11 @@ def runIF(filename, X, gt, runs):
     times = []
     flips = []
     aris = []
-    n_es = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-    for n_e in n_es:
-        print(n_e, end=",")
+    # params = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+    params = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    # for param in params:
+    for param in params:
+        print(param, end=",")
         labels = []
         timeElapsed = []
         ari = []
@@ -77,7 +79,8 @@ def runIF(filename, X, gt, runs):
         for i in range(runs):
             t1_start = process_time()
             
-            clustering = IsolationForest(n_estimators=n_e).fit(X)
+            # clustering = IsolationForest(n_estimators=param).fit(X)
+            clustering = IsolationForest(max_samples=param).fit(X)
 
             t1_stop = process_time()
             timeElapsed.append(t1_stop-t1_start)
@@ -94,15 +97,15 @@ def runIF(filename, X, gt, runs):
         flips.append(flipped)
     print()
 
-    draw(filename, n_es,flips,times, aris)
+    draw(filename,params,flips,times, aris)
     
     t = times/(np.max(times))
     f = flips/(np.max(flips))
     a = [(x-np.min(aris))/(np.max(aris) - np.min(aris)) for x in aris]
     
-    time_slope, _, _, _, _ = stats.linregress(n_es, t)
-    flip_slope, _, _, _, _ = stats.linregress(n_es, f)
-    ari_slope, _, _, _, _ = stats.linregress(n_es, a)
+    time_slope, _, _, _, _ = stats.linregress(params, t)
+    flip_slope, _, _, _, _ = stats.linregress(params, f)
+    ari_slope, _, _, _, _ = stats.linregress(params, a)
     
     return time_slope, flip_slope, ari_slope
     
@@ -181,8 +184,8 @@ def draw(filename, sfs, f, t, a):
     # plt2 = ax.plot(sfs, a, color="orange", marker='o', label="ARI")
     # plt3 = ax.plot(sfs, ma, color="green", marker='o', label="Mutual ARI")
     
-    ax.set_xlabel("support_fraction", fontsize = 12)
-    ax.set_ylabel("Vulnerability", color="red", fontsize=12)
+    ax.set_xlabel(parameter_st, fontsize = 12)
+    ax.set_ylabel("Flips", color="red", fontsize=12)
     
     ax2=ax.twinx()
     ax2.grid(False)
