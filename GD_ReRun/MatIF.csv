@@ -1,2 +1,2 @@
 Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
-wine,0.1,50,auto
+glass,0.005,100,auto

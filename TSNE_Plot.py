@@ -487,73 +487,73 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     """Restart"""
     l1, l2, l3, l4 = runAlgo_restart(filename, Algo, X)
     
-    l1_l2_xor = np.logical_xor(l1,l2)
-    l_r1 = l1_l2_xor
+    # l1_l2_xor = np.logical_xor(l1,l2)
+    # l_r1 = l1_l2_xor
     
-    l2_l3_xor = np.logical_xor(l2,l3)
-    l_r2 = np.logical_or(l_r1, l2_l3_xor)
+    # l2_l3_xor = np.logical_xor(l2,l3)
+    # l_r2 = np.logical_or(l_r1, l2_l3_xor)
     
-    l3_l4_xor = np.logical_xor(l3,l4)
-    l_r3 = np.logical_or(l_r2, l3_l4_xor)
+    # l3_l4_xor = np.logical_xor(l3,l4)
+    # l_r3 = np.logical_or(l_r2, l3_l4_xor)
     
-    plt.rcParams['figure.figsize'] = [5,5]
+    # plt.rcParams['figure.figsize'] = [5,5]
     
-    # L1-L2
+    # # L1-L2
     
-    fig = plt.figure()
-    indicesToKeep = (l_r1 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="")
+    # fig = plt.figure()
+    # indicesToKeep = (l_r1 == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
     
-    indicesToKeep = (l_r1 == 1)
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend()    
-    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_1.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # indicesToKeep = (l_r1 == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend()    
+    # plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_1.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
-    # L2-L3
+    # # L2-L3
     
-    fig = plt.figure()
-    indicesToKeep = (l_r2 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="")
+    # fig = plt.figure()
+    # indicesToKeep = (l_r2 == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
     
-    indicesToKeep = (l_r2 == 1)
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend()
-    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_2.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # indicesToKeep = (l_r2 == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend()
+    # plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_2.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
-    #L3-L4
-    fig = plt.figure()
-    indicesToKeep = (l_r3 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="")
+    # #L3-L4
+    # fig = plt.figure()
+    # indicesToKeep = (l_r3 == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
     
-    indicesToKeep = (l_r3 == 1)
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend()
+    # indicesToKeep = (l_r3 == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend()
 
-    plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_3.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_3.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
     ''' Resource '''
     
@@ -573,12 +573,12 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     # indicesToKeep = (lf_r3 == 0)
     # plt0 = plt.scatter(x.loc[indicesToKeep,1]
     #   ,x.loc[indicesToKeep,0]
-    #   ,s = 25, facecolors='none', edgecolor='black', label="")
+    #   ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
     
     # indicesToKeep = (lf_r3 == 1)
     # plt2 = plt.scatter(x.loc[indicesToKeep,1]
     #   ,x.loc[indicesToKeep,0]
-    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
+    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
     # plt.grid(False)
     # plt.xticks([])
     # plt.yticks([])
@@ -593,12 +593,12 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = (l1_li_xor == 0)
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="")
+      ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
     
     indicesToKeep = (l1_li_xor == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped")
+      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -622,7 +622,7 @@ if __name__ == '__main__':
     # for Algo in Algos:    
     #     for FileNumber in range(len(master_files)):
     #         calculateAccuracy(master_files[FileNumber], Algo)
-    # calculateAccuracy("ionosphere", "LOF")
+    calculateAccuracy("ionosphere", "LOF")
         
     # calculateAccuracy("fertility", "IF")
     # calculateAccuracy("glass", "IF")
