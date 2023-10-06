@@ -272,8 +272,8 @@ if __name__ == '__main__':
         #     # print(fname, " already done!")
         #     continue
         X, gt = ReadFile(fname)
-        # t_b, f_b, a_b = runEE(fname, X, gt, runs)
-        t_b, f_b, a_b = runIF(fname, X, gt, runs)
+        t_b, f_b, a_b = runEE(fname, X, gt, runs)
+        # t_b, f_b, a_b = runIF(fname, X, gt, runs)
     #     print("Slopes: ", t_b, f_b, a_b)
     #     save_slope(fname, t_b, f_b, a_b)
     #     slope_ts.append(t_b)
