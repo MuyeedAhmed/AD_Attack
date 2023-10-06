@@ -24,7 +24,7 @@ warnings.filterwarnings(action='ignore')
 datasetFolderDir = 'Dataset/'
 
 implementation = "SkIF"
-parameter_st = "max_samples"
+parameter_st = "max_features"
 
 def ReadFile(filename):
     print(filename)
@@ -80,7 +80,7 @@ def runIF(filename, X, gt, runs):
             t1_start = process_time()
             
             # clustering = IsolationForest(n_estimators=param).fit(X)
-            clustering = IsolationForest(max_samples=param).fit(X)
+            clustering = IsolationForest(max_features=param).fit(X)
 
             t1_stop = process_time()
             timeElapsed.append(t1_stop-t1_start)
@@ -272,6 +272,8 @@ if __name__ == '__main__':
         # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
         #     # print(fname, " already done!")
         #     continue
+        if fname != 'glass':
+            continue
         X, gt = ReadFile(fname)
         # t_b, f_b, a_b = runEE(fname, X, gt, runs)
         t_b, f_b, a_b = runIF(fname, X, gt, runs)
