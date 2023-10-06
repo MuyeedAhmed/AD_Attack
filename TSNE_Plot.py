@@ -58,8 +58,8 @@ def calculateAccuracy(filename, Algo):
     X_embedded = pd.DataFrame(X_embedded)
     
     # drawPlot(filename, Algo, "Matlab", "R", X_embedded, gt)
-    # drawPlot(filename, Algo, "Sklearn", "R", X_embedded, gt)
-    drawPlot_full(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
+    drawPlot(filename, Algo, "Sklearn", "R", X_embedded, gt, X)
+    # drawPlot_full(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
 
 
 def runAlgo(filename, X):
@@ -148,43 +148,43 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     # plt.show()
 
     
-    plt.rcParams['figure.figsize'] = [5, 5]
+    # plt.rcParams['figure.figsize'] = [5, 5]
     
-    fig = plt.figure()
-    indicesToKeep = (y == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-     ,x.loc[indicesToKeep,0]
-     ,s = 50, color='green')
+    # fig = plt.figure()
+    # indicesToKeep = (y == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #  ,x.loc[indicesToKeep,0]
+    #  ,s = 50, color='green')
     
-    indicesToKeep = y == 1
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-     ,x.loc[indicesToKeep,0]
-     ,s = 75, marker='X', color='red')
-    plt.grid(False)
-    # plt.xticks([])
-    # plt.yticks([])
-    plt.ylim(0, 25)
-    plt.xlim(0, 10)
+    # indicesToKeep = y == 1
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #  ,x.loc[indicesToKeep,0]
+    #  ,s = 75, marker='X', color='red')
+    # plt.grid(False)
+    # # plt.xticks([])
+    # # plt.yticks([])
+    # plt.ylim(0, 25)
+    # plt.xlim(0, 10)
     
-    plt.show()
+    # plt.show()
 
     '''
     Original - L1 Run1
     '''
     fig = plt.figure()
-    # plt.rcParams['figure.figsize'] = [5, 10]
+    plt.rcParams['figure.figsize'] = [10, 4]
     
     # plt.title(filename, fontsize=15)
     
     indicesToKeep = (l1 == 0)
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 50, color='green')
+      ,s = 50, facecolors='white', edgecolor='black')
     
     indicesToKeep = l1 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 75, marker='X', color='red')
+     ,s = 75, marker='x', color='black')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -193,13 +193,13 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     
     plt.annotate("A: Outlier",
             xy=(6.85, 10.7), xycoords='data',
-            xytext=(4.8, 10.7), textcoords='data',
+            xytext=(5.8, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
             xy=(2.75, 6.93), xycoords='data',
-            xytext=(4.5, 6.93), textcoords='data',
+            xytext=(3.8, 6.93), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
@@ -211,7 +211,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             )
     plt.annotate("D: Inlier",
             xy=(2.2, 6.05), xycoords='data',
-            xytext=(4.2, 6.05), textcoords='data',
+            xytext=(3.8, 6.05), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
@@ -221,14 +221,8 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='red'
             )
-    # plt.text(10, 7.1, "A: Outlier", fontsize=15)
-    # plt.text(8.5, 3.0, "B: Outlier", fontsize=15)
-    # plt.text(8.5, 2.6, "C: Outlier", fontsize=15)
-    # plt.text(8.5, 2.2, "D: Inlier", fontsize=15)
-    # plt.text(7.0, 1.2, "E: Outlier", fontsize=15)
     
-    
-    # plt.savefig('Fig/'+filename+'_SkIF_R1_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_R1_10x4.pdf', bbox_inches="tight", pad_inches=0)
     plt.show()
 
     '''
@@ -239,12 +233,12 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l2 == 0
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 50, color='green')
+      ,s = 50, facecolors='white', edgecolor='black')
     
     indicesToKeep = l2 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 75, marker='X', color='red')
+     ,s = 75, marker='x', color='black')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -252,13 +246,13 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.xlim(1, 7.5)
     plt.annotate("A: Inlier",
             xy=(6.85, 10.7), xycoords='data',
-            xytext=(4.8, 10.7), textcoords='data',
+            xytext=(5.8, 10.7), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
     plt.annotate("B: Inlier",
             xy=(2.75, 6.93), xycoords='data',
-            xytext=(4.5, 6.93), textcoords='data',
+            xytext=(3.8, 6.93), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
@@ -270,7 +264,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             )
     plt.annotate("D: Inlier",
             xy=(2.2, 6.05), xycoords='data',
-            xytext=(4.2, 6.05), textcoords='data',
+            xytext=(3.8, 6.05), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
@@ -280,7 +274,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    # plt.savefig('Fig/'+filename+'_SkIF_R2_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_R2_10x4.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     
@@ -292,12 +286,12 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l3 == 0
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 50, color='green')
+      ,s = 50, facecolors='white', edgecolor='black')
     
     indicesToKeep = l3 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 75, marker='X', color='red')
+     ,s = 75, marker='x', color='black')
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
@@ -305,13 +299,13 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
             xy=(6.85, 10.7), xycoords='data',
-            xytext=(4.8, 10.7), textcoords='data',
+            xytext=(5.8, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("B: Outlier",
             xy=(2.75, 6.93), xycoords='data',
-            xytext=(4.5, 6.93), textcoords='data',
+            xytext=(3.8, 6.93), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
@@ -323,7 +317,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             )
     plt.annotate("D: Outlier",
             xy=(2.2, 6.05), xycoords='data',
-            xytext=(4.2, 6.05), textcoords='data',
+            xytext=(3.8, 6.05), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
@@ -333,7 +327,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    # plt.savefig('Fig/'+filename+'_SkIF_Fast_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_SkIF_Fast_10x4.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     '''
@@ -343,12 +337,12 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     indicesToKeep = l4 == 0
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 50, color='green')
+      ,s = 50, facecolors='white', edgecolor='black')
     
     indicesToKeep = l4 == 1
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
      ,x.loc[indicesToKeep,0]
-     ,s = 75, marker='X', color='red')
+     ,s = 75, marker='x', color='black')
     # plt.grid(True)
     plt.grid(False)
     plt.xticks([])
@@ -357,13 +351,13 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
     plt.xlim(1, 7.5)
     plt.annotate("A: Outlier",
             xy=(6.85, 10.7), xycoords='data',
-            xytext=(4.8, 10.7), textcoords='data',
+            xytext=(5.8, 10.7), textcoords='data',
             arrowprops=dict(color='Red', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='red'
             )
     plt.annotate("B: Inlier",
             xy=(2.75, 6.93), xycoords='data',
-            xytext=(4.5, 6.93), textcoords='data',
+            xytext=(3.8, 6.93), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
@@ -375,7 +369,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             )
     plt.annotate("D: Inlier",
             xy=(2.2, 6.05), xycoords='data',
-            xytext=(4.2, 6.05), textcoords='data',
+            xytext=(3.8, 6.05), textcoords='data',
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='center', verticalalignment='center', size = 15,color='green'
             )
@@ -385,7 +379,7 @@ def drawPlot(filename, Algo, tool1, tool2, x, y, X):
             arrowprops=dict(color='Green', shrink=0.1, linewidth=0.01),
             horizontalalignment='left', verticalalignment='center', size = 15,color='green'
             )
-    # plt.savefig('Fig/'+filename+'_MatIF_Def_Box.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    plt.savefig('Fig/'+filename+'_MatIF_Def_10x4.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
 
 
@@ -622,10 +616,12 @@ if __name__ == '__main__':
     # for Algo in Algos:    
     #     for FileNumber in range(len(master_files)):
     #         calculateAccuracy(master_files[FileNumber], Algo)
-    calculateAccuracy("ionosphere", "LOF")
+    # calculateAccuracy("ionosphere", "LOF")
         
     # calculateAccuracy("fertility", "IF")
     # calculateAccuracy("glass", "IF")
+    
+    calculateAccuracy("spambase", "IF")
 
 
 
