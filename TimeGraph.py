@@ -23,8 +23,8 @@ warnings.filterwarnings(action='ignore')
 
 datasetFolderDir = 'Dataset/'
 
-implementation = "SkEE"
-parameter_st = "support_fraction"
+implementation = "SkIF"
+parameter_st = "max_samples"
 
 def ReadFile(filename):
     print(filename)
@@ -179,19 +179,20 @@ def draw(filename, sfs, f, t, a):
     # ma = [(x-np.min(ma))/(np.max(ma) - np.min(ma)) for x in ma]
         
     fig,ax = plt.subplots()
-    
-    plt1 = ax.plot(sfs, f, color="red", marker="o", label="Flips")
+    plt.figure(figsize=(8, 6))
+
+    plt1 = ax.plot(sfs, f, color="red", marker="o")
     # plt2 = ax.plot(sfs, a, color="orange", marker='o', label="ARI")
     # plt3 = ax.plot(sfs, ma, color="green", marker='o', label="Mutual ARI")
     
-    ax.set_xlabel(parameter_st, fontsize = 12)
-    ax.set_ylabel("Flips", color="red", fontsize=12)
+    ax.set_xlabel(parameter_st, fontsize = 15)
+    ax.set_ylabel("Flipped Points", color="red", fontsize=15)
     
     ax2=ax.twinx()
     ax2.grid(False)
 
     plt3 = ax2.plot(sfs, t,color="blue",marker="o")
-    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=12)
+    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=15)
     ax.legend()
     plt.show()
     
@@ -272,8 +273,8 @@ if __name__ == '__main__':
         #     # print(fname, " already done!")
         #     continue
         X, gt = ReadFile(fname)
-        t_b, f_b, a_b = runEE(fname, X, gt, runs)
-        # t_b, f_b, a_b = runIF(fname, X, gt, runs)
+        # t_b, f_b, a_b = runEE(fname, X, gt, runs)
+        t_b, f_b, a_b = runIF(fname, X, gt, runs)
     #     print("Slopes: ", t_b, f_b, a_b)
     #     save_slope(fname, t_b, f_b, a_b)
     #     slope_ts.append(t_b)
