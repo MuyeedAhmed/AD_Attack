@@ -272,8 +272,6 @@ if __name__ == '__main__':
         # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
         #     # print(fname, " already done!")
         #     continue
-        if fname != 'glass':
-            continue
         X, gt = ReadFile(fname)
         # t_b, f_b, a_b = runEE(fname, X, gt, runs)
         t_b, f_b, a_b = runIF(fname, X, gt, runs)
