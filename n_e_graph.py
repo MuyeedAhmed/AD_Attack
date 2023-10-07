@@ -113,7 +113,7 @@ def isolationforest(filename):
     f_p = []
     
     t_all = [0.04969595999999939, 0.09974557999999917, 0.15023724000000072, 0.1970731800000007, 0.24362298000000124, 0.29080861999999913, 0.3405281199999996, 0.3881066999999985, 0.4373698400000006, 0.49845322000000236]
-    
+    t_all = [x/np.max(t_all) for x in t_all]
     fig,ax = plt.subplots()
     plt.figure(figsize=(8, 6))
     # ax.grid(False)
@@ -135,7 +135,7 @@ def isolationforest(filename):
 
     # make a plot with different y-axis using second axis object
     ax2.plot(n_e, t_all,color="blue",marker="o")
-    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=15)
+    ax2.set_ylabel("Time",color="blue",fontsize=15)
     plt.show()
     
     fig.savefig('Fig/n_e_graph.pdf', bbox_inches='tight')

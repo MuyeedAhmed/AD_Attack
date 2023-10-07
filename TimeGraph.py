@@ -23,8 +23,8 @@ warnings.filterwarnings(action='ignore')
 
 datasetFolderDir = 'Dataset/'
 
-implementation = "SkIF"
-parameter_st = "max_features"
+implementation = "SkEE"
+parameter_st = "support_fraction"
 
 def ReadFile(filename):
     print(filename)
@@ -67,9 +67,12 @@ def runIF(filename, X, gt, runs):
     times = []
     flips = []
     aris = []
-    # params = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-    params = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-    # for param in params:
+    
+    if parameter_st == "max_features" or parameter_st == "max_samples":
+        params = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]        
+    elif parameter_st == "n_estimators":
+        params = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+    
     for param in params:
         print(param, end=",")
         labels = []
@@ -79,9 +82,14 @@ def runIF(filename, X, gt, runs):
         for i in range(runs):
             t1_start = process_time()
             
-            # clustering = IsolationForest(n_estimators=param).fit(X)
-            clustering = IsolationForest(max_features=param).fit(X)
-
+            if parameter_st == "max_samples":
+                clustering = IsolationForest(max_samples=param).fit(X)
+            elif parameter_st == "max_features":
+                clustering = IsolationForest(max_features=param).fit(X)
+            elif parameter_st == "n_estimators":
+                clustering = IsolationForest(n_estimators=param).fit(X)
+            
+            
             t1_stop = process_time()
             timeElapsed.append(t1_stop-t1_start)
     
@@ -174,7 +182,7 @@ def runEE(filename, X, gt, runs):
 
     
 def draw(filename, sfs, f, t, a):
-    # f = f/(np.max(f))
+    t = t/(np.max(t))
     # a = [(x-np.min(a))/(np.max(a) - np.min(a)) for x in a]
     # ma = [(x-np.min(ma))/(np.max(ma) - np.min(ma)) for x in ma]
         
@@ -192,8 +200,8 @@ def draw(filename, sfs, f, t, a):
     ax2.grid(False)
 
     plt3 = ax2.plot(sfs, t,color="blue",marker="o")
-    ax2.set_ylabel("Time (seconds)",color="blue",fontsize=15)
-    ax.legend()
+    ax2.set_ylabel("Time",color="blue",fontsize=15)
+    # ax.legend()
     plt.show()
     
     fig.savefig('Fig/Time/'+implementation+'_'+parameter_st+'_'+filename+'.pdf', bbox_inches='tight')
@@ -272,9 +280,11 @@ if __name__ == '__main__':
         # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
         #     # print(fname, " already done!")
         #     continue
+        if fname != "flare":
+            continue
         X, gt = ReadFile(fname)
-        # t_b, f_b, a_b = runEE(fname, X, gt, runs)
-        t_b, f_b, a_b = runIF(fname, X, gt, runs)
+        t_b, f_b, a_b = runEE(fname, X, gt, runs)
+        # t_b, f_b, a_b = runIF(fname, X, gt, runs)
     #     print("Slopes: ", t_b, f_b, a_b)
     #     save_slope(fname, t_b, f_b, a_b)
     #     slope_ts.append(t_b)
