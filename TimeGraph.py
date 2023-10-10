@@ -136,7 +136,7 @@ def runEE(filename, X, gt, runs):
             #time
             t1_start = process_time()
             
-            clustering = EllipticEnvelope(support_fraction=sf, contamination=0.1).fit(X)
+            clustering = EllipticEnvelope(support_fraction=sf, contamination=0.1, random_state=0).fit(X)
 
             t1_stop = process_time()
             timeElapsed.append(t1_stop-t1_start)
