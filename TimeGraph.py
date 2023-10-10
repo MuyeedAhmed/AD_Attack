@@ -136,7 +136,7 @@ def runEE(filename, X, gt, runs):
             #time
             t1_start = process_time()
             
-            clustering = EllipticEnvelope(support_fraction=sf, contamination=0.1, random_state=0).fit(X)
+            clustering = EllipticEnvelope(support_fraction=sf, contamination=0.1, random_state=i*3).fit(X)
 
             t1_stop = process_time()
             timeElapsed.append(t1_stop-t1_start)
@@ -149,6 +149,7 @@ def runEE(filename, X, gt, runs):
         avgTimeElapsed = sum(timeElapsed)/len(timeElapsed)
         aris.append(np.mean(ari))
         flipped = flip_count(filename, gt, labels, runs)
+        print(flipped, avgTimeElapsed)
         times.append(avgTimeElapsed)
         flips.append(flipped)
     print()
@@ -182,7 +183,7 @@ def runEE(filename, X, gt, runs):
 
     
 def draw(filename, sfs, f, t, a):
-    t = t/(np.max(t))
+    t = t/(np.min(t))
     # a = [(x-np.min(a))/(np.max(a) - np.min(a)) for x in a]
     # ma = [(x-np.min(ma))/(np.max(ma) - np.min(ma)) for x in ma]
         
