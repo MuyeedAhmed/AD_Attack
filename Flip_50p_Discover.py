@@ -17,8 +17,8 @@ from numpy import unravel_index
 
 import scipy.stats as stats
 
-import matlab.engine
-eng = matlab.engine.start_matlab()
+# import matlab.engine
+# eng = matlab.engine.start_matlab()
 
 import warnings
 warnings.filterwarnings(action='ignore')
@@ -148,8 +148,8 @@ def drawBeanPlot(df):
     plt.figure(figsize=(8, 6))
     sns.violinplot(data=df, palette="Set3")
     plt.xlabel('')
-    plt.ylabel('')
-    plt.xticks(fontsize=20)
+    plt.ylabel('Restart', fontsize=15)
+    plt.xticks(fontsize=15)
     plt.yticks(fontsize=15)
     plt.xticks(rotation=30)
 
@@ -174,24 +174,24 @@ if __name__ == '__main__':
     runs = 50
     df = pd.read_csv("Stats/Flips_50.csv")
 
-    for fname in master_files:
-        # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
-        #     # print(fname, " already done!")
-        #     continue
-        # if fname != "flare":
-        #     continue
-        X, gt = ReadFile(fname)
+    # for fname in master_files:
+    #     # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
+    #     #     # print(fname, " already done!")
+    #     #     continue
+    #     # if fname != "flare":
+    #     #     continue
+    #     X, gt = ReadFile(fname)
         
-        p50 = runAlgo("MatEE", fname, X, gt, runs)
-        df.loc[df['Filename'] == fname, 'Matlab/RobCov'] = p50
-        p50 = runAlgo("MatIF", fname, X, gt, runs)
-        df.loc[df['Filename'] == fname, 'Matlab/IF'] = p50
-        p50 = runAlgo("MatOCSVM", fname, X, gt, runs)
-        df.loc[df['Filename'] == fname, 'Matlab/OCSVM'] = p50
+    #     p50 = runAlgo("MatEE", fname, X, gt, runs)
+    #     df.loc[df['Filename'] == fname, 'Matlab/RobCov'] = p50
+    #     p50 = runAlgo("MatIF", fname, X, gt, runs)
+    #     df.loc[df['Filename'] == fname, 'Matlab/IF'] = p50
+    #     p50 = runAlgo("MatOCSVM", fname, X, gt, runs)
+    #     df.loc[df['Filename'] == fname, 'Matlab/OCSVM'] = p50
 
-    df.to_csv("Stats/Flips_50.csv")        
+    # df.to_csv("Stats/Flips_50.csv")        
     df.replace(-1, np.nan, inplace=True)
     drawBeanPlot(df)
-    eng.quit()
+    # eng.quit()
 
     

@@ -23,8 +23,8 @@ warnings.filterwarnings(action='ignore')
 
 datasetFolderDir = 'Dataset/'
 
-implementation = "SkEE"
-parameter_st = "support_fraction"
+implementation = "SkIF"
+parameter_st = "max_features"
 
 def ReadFile(filename):
     print(filename)
@@ -239,10 +239,10 @@ def flip_count(filename, gt, labels, runs):
 
 
 def drawBeanPlot(bt, bf, ba):
-    data_combined = np.concatenate([bt, bf, ba])
-    labels = ['Time'] * len(bt) + ['Flips'] * len(bf) + ['ARI'] * len(ba)
+    data_combined = np.concatenate([bt, bf])
+    labels = ['Time'] * len(bt) + ['Flips'] * len(bf)
     df = pd.DataFrame({'Group': labels, 'Value': data_combined})
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(4, 6))
     sns.violinplot(data=df, x='Group', y='Value')
     plt.xlabel('')
     plt.ylabel('')
@@ -277,14 +277,14 @@ if __name__ == '__main__':
     
     runs = 50
     
-    for fname in master_files:
-        # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
-        #     # print(fname, " already done!")
-        #     continue
-        if fname != "flare":
-            continue
-        X, gt = ReadFile(fname)
-        t_b, f_b, a_b = runEE(fname, X, gt, runs)
+    # for fname in master_files:
+    #     # if os.path.exists("Fig/Time/SkEE_"+fname+".pdf"):
+    #     #     # print(fname, " already done!")
+    #     #     continue
+    #     if fname != "flare":
+    #         continue
+    #     X, gt = ReadFile(fname)
+    #     t_b, f_b, a_b = runEE(fname, X, gt, runs)
         # t_b, f_b, a_b = runIF(fname, X, gt, runs)
     #     print("Slopes: ", t_b, f_b, a_b)
     #     save_slope(fname, t_b, f_b, a_b)
@@ -293,12 +293,12 @@ if __name__ == '__main__':
     #     slope_as.append(a_b)
     
     
-    # df = pd.read_csv("Stats/Slope_"+implementation+"_"+parameter_st+".csv")
-    # slope_ts = df["Time_slope"].to_numpy()
-    # slope_fs = df["Flip_slope"].to_numpy()
-    # slope_as = df["ARI_Slope"].to_numpy()
+    df = pd.read_csv("Stats/Slope_"+implementation+"_"+parameter_st+".csv")
+    slope_ts = df["Time_slope"].to_numpy()
+    slope_fs = df["Flip_slope"].to_numpy()
+    slope_as = df["ARI_Slope"].to_numpy()
     
-    # drawBeanPlot(slope_ts, slope_fs, slope_as)
+    drawBeanPlot(slope_ts, slope_fs, slope_as)
     
     
     

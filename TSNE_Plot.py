@@ -58,8 +58,8 @@ def calculateAccuracy(filename, Algo):
     X_embedded = pd.DataFrame(X_embedded)
     
     # drawPlot(filename, Algo, "Matlab", "R", X_embedded, gt)
-    drawPlot(filename, Algo, "Sklearn", "R", X_embedded, gt, X)
-    # drawPlot_full(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
+    # drawPlot(filename, Algo, "Sklearn", "R", X_embedded, gt, X)
+    drawPlot_full(filename, Algo, "Sklearn", "Matlab", X_embedded, gt, X)
 
 
 def runAlgo(filename, X):
@@ -481,18 +481,18 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     """Restart"""
     l1, l2, l3, l4 = runAlgo_restart(filename, Algo, X)
     
-    # l1_l2_xor = np.logical_xor(l1,l2)
-    # l_r1 = l1_l2_xor
+    l1_l2_xor = np.logical_xor(l1,l2)
+    l_r1 = l1_l2_xor
     
-    # l2_l3_xor = np.logical_xor(l2,l3)
-    # l_r2 = np.logical_or(l_r1, l2_l3_xor)
+    l2_l3_xor = np.logical_xor(l2,l3)
+    l_r2 = np.logical_or(l_r1, l2_l3_xor)
     
-    # l3_l4_xor = np.logical_xor(l3,l4)
-    # l_r3 = np.logical_or(l_r2, l3_l4_xor)
+    l3_l4_xor = np.logical_xor(l3,l4)
+    l_r3 = np.logical_or(l_r2, l3_l4_xor)
     
-    # plt.rcParams['figure.figsize'] = [5,5]
+    plt.rcParams['figure.figsize'] = [5,3.5]
     
-    # # L1-L2
+    # L1-L2
     
     # fig = plt.figure()
     # indicesToKeep = (l_r1 == 0)
@@ -551,7 +551,7 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     
     ''' Resource '''
     
-    l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
+    # l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
     
     # l1f_l2f_xor = np.logical_xor(l1f,l2f)
     # lf_r1 = l1f_l2f_xor
@@ -616,12 +616,12 @@ if __name__ == '__main__':
     # for Algo in Algos:    
     #     for FileNumber in range(len(master_files)):
     #         calculateAccuracy(master_files[FileNumber], Algo)
-    # calculateAccuracy("ionosphere", "LOF")
+    calculateAccuracy("ionosphere", "LOF")
         
     # calculateAccuracy("fertility", "IF")
     # calculateAccuracy("glass", "IF")
     
-    calculateAccuracy("spambase", "IF")
+    # calculateAccuracy("spambase", "IF")
 
 
 

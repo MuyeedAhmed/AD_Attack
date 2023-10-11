@@ -1,2 +1,2 @@
 Filename,ContaminationFraction,NumLearners,NumObservationsPerLearner
-lungcancer_GSE31210,0.1,100,auto
+glass,0.005,100,auto
