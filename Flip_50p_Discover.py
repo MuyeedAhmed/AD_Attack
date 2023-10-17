@@ -146,7 +146,7 @@ def flip_count(filename, gt, labels, runs):
 def drawBeanPlot(df):
     
     plt.figure(figsize=(8, 6))
-    sns.violinplot(data=df, palette="Set3")
+    sns.boxplot(data=df, palette="Set3")
     plt.xlabel('')
     plt.ylabel('Restart', fontsize=15)
     plt.xticks(fontsize=15)

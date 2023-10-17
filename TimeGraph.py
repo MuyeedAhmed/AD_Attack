@@ -23,8 +23,8 @@ warnings.filterwarnings(action='ignore')
 
 datasetFolderDir = 'Dataset/'
 
-implementation = "SkIF"
-parameter_st = "max_features"
+implementation = "SkEE"
+parameter_st = "support_fraction"
 
 def ReadFile(filename):
     print(filename)
@@ -243,7 +243,7 @@ def drawBeanPlot(bt, bf, ba):
     labels = ['Time'] * len(bt) + ['Flips'] * len(bf)
     df = pd.DataFrame({'Group': labels, 'Value': data_combined})
     plt.figure(figsize=(4, 6))
-    sns.violinplot(data=df, x='Group', y='Value')
+    sns.boxplot(data=df, x='Group', y='Value')
     plt.xlabel('')
     plt.ylabel('')
     plt.xticks(fontsize=20)
