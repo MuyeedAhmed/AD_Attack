@@ -97,9 +97,12 @@ def runIF(filename, X, gt, params, runs, mode):
     # g.avgFlippedInSingleRun()
     # g.flippedInSingleRunSorted()
     # g.flippedInSingleRunUnsorted()
-    g.flippedInSingleRunUnsortedBarchart(True)
-    # g.flippedInSingleRunSortedASC()
-    # g.flippedInSingleRunSortedDSC()
+    # g.flippedInSingleRunUnsortedBarchart(True)
+    _, typ = g.get50thPercentile()
+    asc = g.flippedInSingleRunSortedASC()
+    dsc = g.flippedInSingleRunSortedDSC()
+    
+    g.MergeEffectsOfRunOrder(typ,dsc,asc, True)
     
     # f=open("Stats/SkIF.csv", "a")
     # f.write(filename+','+mode+','+str(avgTimeElapsed)+','+str(g.flipped)+','+str(g.flipped/len(gt))+','+str(g.get50thPercentile())+','+str(g.avgFlippedPerRun)+','+str(avgFlippedPerRunPercentage))
@@ -141,7 +144,7 @@ if __name__ == '__main__':
               
     optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
   
-    isolationforest('ionosphere', optSettings)
+    isolationforest('breastw', optSettings)
     
     
     
@@ -164,15 +167,16 @@ def drawFlipsAllDataset():
     # ax.patches[27].set_facecolor('red')
     # plt.savefig("FlipFig/SkIF_AllDataset_Default_Combined.pdf", bbox_inches="tight", pad_inches=0)
     
-    g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_all','to_fi_per_all'], figsize=(20, 5), width=1, legend=None)
+    g = plt.figure(figsize=(9, 5), dpi=80)
+    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_all','to_fi_per_all'], figsize=(10, 5), width=1, legend=None)
     # ax.patches[27].set_facecolor('red')
     plt.xlabel("Dataset",fontsize=20)
     plt.ylabel("Flipped Points (%)", fontsize=20)
     # plt.xticks(rotation = 45, horizontalalignment='right', fontsize=16)
     plt.xticks([])
+    plt.yticks(fontsize=15)
     ax.legend(["True Inlier -> False Outlier", "True Outlier -> False Inlier"], fontsize=20)
-    plt.savefig("FlipFig/SkIF_AllDataset_Default_Combined_Broken_no_name.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("Fig/SkIF_AllDataset_Default_Combined_Broken_no_name.pdf", bbox_inches="tight", pad_inches=0)
     
     
     
@@ -184,11 +188,14 @@ def drawFlipsAllDataset():
     # plt.savefig("FlipFig/SkIF_AllDataset_Default_Avg.pdf", bbox_inches="tight", pad_inches=0)
     
     
-    g = plt.figure(figsize=(20, 5), dpi=80)
-    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_avg','to_fi_per_avg'], figsize=(20, 5), width=1, legend=None)
+    g = plt.figure(figsize=(9, 5), dpi=80)
+    ax = df_def.plot.bar(x='Filename', y=['ti_fo_per_avg','to_fi_per_avg'], figsize=(10, 5), width=1, legend=None)
     plt.xlabel("Dataset",fontsize=20)
     plt.ylabel("Flipped Points (%)", fontsize=20)
     # plt.xticks(rotation = 45, horizontalalignment='right', fontsize=16)
     plt.xticks([])
+    plt.yticks(fontsize=15)
+
     ax.legend(["True Inlier -> False Outlier", "True Outlier -> False Inlier"], fontsize=20)
-    plt.savefig("FlipFig/SkIF_AllDataset_Default_Avg_Broken_no_name.pdf", bbox_inches="tight", pad_inches=0)
+    plt.savefig("Fig/SkIF_AllDataset_Default_Avg_Broken_no_name.pdf", bbox_inches="tight", pad_inches=0)
+    

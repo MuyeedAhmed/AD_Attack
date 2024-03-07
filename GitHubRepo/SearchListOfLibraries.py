@@ -46,14 +46,18 @@ def RemoveDuplicates(file_path, lib):
 
 
 if __name__ == "__main__":
-    GITHUB_TOKEN=""
-    libs = ["H2OIsolationForest", "LOF", "pyod.models.lof", "Anomalize", "pyod", "cuml"]
+    GITHUB_TOKEN="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"
+    # libs = ["H2oIsolationForest", "LOF", "pyod.models.lof", "Anomalize", "pyod", "cuml"]
+    # libs = ["libsvm", "elki.algorithm.outlier", "lof.LOF", "clusterers.LOF", "clusterers.iForest"]
+    libs = ["iforest", "lof", "svm"]
 
     for lib in libs:
         RunBash(GITHUB_TOKEN, lib)
-        os.remove("output.txt")
-        RemoveDuplicates("repository_stars.csv",lib)
-    
+        try:
+            os.remove("output.txt")
+            RemoveDuplicates("repository_stars.csv",lib)
+        except:
+            print("Main function error")    
     
     
     

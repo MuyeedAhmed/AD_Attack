@@ -103,13 +103,14 @@ class draw:
                     variables += 1
             variables_iter.append(variables)
             
-        probability = [(x / self.flipped)*100 for x in variables_iter]
+        probability = [(x / (self.flipped+1))*100 for x in variables_iter]
         for i in range(self.run_count-1):
             if probability[i] < 0.5:
                 continue
             else:
                 runNumber50p = i
                 break
+            
         g = plt.figure(figsize=(self.figsize_x,self.figsize_y))
         plt.plot(probability)
         plt.xticks(fontsize=self.tickSize)
@@ -120,7 +121,7 @@ class draw:
         if save:
             plt.savefig(self.savePath+"_Count_percentage.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
-        return runNumber50p
+        return runNumber50p, probability
     
     '''Flipped in a single run (mean)'''
     def avgFlippedInSingleRun(self):
@@ -181,8 +182,7 @@ class draw:
                     if avg != 0 and avg != 1:
                         self.flippable[n] = False
             f_g.append(flippedIn2Runs[maxInd[0]][maxInd[1]])
-        print("-----")
-        print(f_g)
+
         
         f_g_percentage = [(x/self.flipped)*100 for x in f_g]
         
@@ -281,10 +281,10 @@ class draw:
         f_g = [0]
         doneRun = []
         flippable_temp = self.flippable.copy()
-        print("----")
+        # print("----")
         while sum(flippable_temp) != 0:
             flippedIn2Runs = np.array([[99999]*self.run_count for i in range(self.run_count)])
-            print(sum(flippable_temp), end=' ')
+            # print(sum(flippable_temp), end=' ')
             for i in range(self.run_count):
                 for j in range(i+1,self.run_count):
                     if i in doneRun or j in doneRun:
@@ -310,8 +310,7 @@ class draw:
                         flippable_temp[n] = False
             f_g.append(f_g[-1] + flippedIn2Runs[minInd[0]][minInd[1]])
 
-        f_g_percentage = [(x/self.flipped)*100 for x in f_g]
-        
+        f_g_percentage = [(x/(self.flipped+1))*100 for x in f_g]
         g = plt.figure(figsize=(self.figsize_x,self.figsize_y))
         plt.plot(f_g)
         plt.xlabel("Run")
@@ -329,8 +328,8 @@ class draw:
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
+        return f_g_percentage        
         
-
     ''' Flipped in a single run sorted - dsc '''
     def flippedInSingleRunSortedDSC(self, save=False):
         if self.flipped == -1:
@@ -338,7 +337,7 @@ class draw:
         f_g = [0]
         doneRun = []
         flippable_temp = self.flippable.copy()
-        print("\n----")
+        # print("\n----")
         # while sum(flippable_temp) != 0:
         for _ in range(self.run_count-1):
             flippedIn2Runs = np.array([[0]*self.run_count for i in range(self.run_count)])
@@ -362,12 +361,11 @@ class draw:
                     if self.labels[maxInd[0]][n] != self.labels[maxInd[1]][n]:
                         flippable_temp[n] = False
             f_g.append(f_g[-1] + flippedIn2Runs[maxInd[0]][maxInd[1]])
-        print("\n-----")
-        print(f_g)
-        print(doneRun)
+        # print("\n-----")
+        # print(f_g)
+        # print(doneRun)
 
-        f_g_percentage = [(x/self.flipped)*100 for x in f_g]
-        
+        f_g_percentage = [(x/(self.flipped+1))*100 for x in f_g]
         g = plt.figure(figsize=(self.figsize_x,self.figsize_y))
         plt.plot(f_g)
         plt.xticks(fontsize=self.tickSize)
@@ -387,4 +385,24 @@ class draw:
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
+        
+        return f_g_percentage
+    def MergeEffectsOfRunOrder(self, a, b, c,save=False):
+        g = plt.figure(figsize=(self.figsize_x,self.figsize_y))
+        # plt.plot(a, "o-", linewidth=4, markersize=15, label="Typical scenario")
+        # plt.plot(b, "D-", linewidth=4, markersize=15, label="Most optimistic scenario")
+        # plt.plot(c, "s-", linewidth=4, markersize=15, label="Most pessimistic scenario")
+        plt.plot(a,linewidth=4, label="Typical scenario")
+        plt.plot(b,linewidth=4, label="Most optimistic scenario")
+        plt.plot(c,linewidth=4, label="Most pessimistic scenario")
+        
+        plt.xticks(fontsize=self.tickSize)
+        plt.yticks(fontsize=self.tickSize)
+        plt.xlabel("Run",fontsize=self.labelSize)
+        plt.ylabel("Previously Uniscovered \nFlipped Points (%)",fontsize=self.labelSize)
+        plt.legend(fontsize=self.labelSize)
+        if save:
+            plt.savefig("FlipFig/Paper/"+self.filename+"_FlipOrder.pdf", bbox_inches="tight", pad_inches=0)
+        plt.show()
+        
         

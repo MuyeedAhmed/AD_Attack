@@ -7,7 +7,7 @@ EXPRESSIONS=($2)
 
 rest_call() {
     curl --request GET \
-        --url "https://api.github.com/search/code?q=${EXPRESSION}+language:python&page=${page}" \
+        --url "https://api.github.com/search/code?q=${EXPRESSION}+language:cpp&page=${page}" \
         --header "Accept: application/vnd.github.v3+json" \
         --header "Authorization: Bearer ${GITHUB_TOKEN}"
 }     

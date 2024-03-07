@@ -1,4 +1,6 @@
 import pandas as pd
+import os
+
 
 def RemoveDuplicates(file_path):
     df = pd.read_csv(file_path)
@@ -29,4 +31,26 @@ def mergeFiles():
 
 
 
-file_path = 'OCSVM.csv'
+def MergeAllFilesOfAFolder(folder_path):
+    dfs = []
+    
+    # Loop through each file in the folder
+    for filename in os.listdir(folder_path):
+        if filename.endswith('.csv'):
+            file_path = os.path.join(folder_path, filename)
+            df = pd.read_csv(file_path)
+            dfs.append(df)
+    
+    # Concatenate all DataFrames into a single DataFrame
+    merged_df = pd.concat(dfs, ignore_index=True)
+    
+    # Path to save the merged CSV file
+    merged_csv_path = folder_path+'/ALL.csv'
+    
+    # Save the merged DataFrame to a CSV file
+    merged_df.to_csv(merged_csv_path, index=False)
+
+
+
+folder_path = 'List_Cpp'
+MergeAllFilesOfAFolder(folder_path)
