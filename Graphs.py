@@ -116,7 +116,7 @@ class draw:
         plt.xticks(fontsize=self.tickSize)
         plt.yticks(fontsize=self.tickSize)
         plt.xlabel("Run",fontsize=self.labelSize)
-        plt.ylabel("Previously Uniscovered \nFlipped Points (%)",fontsize=self.labelSize)
+        plt.ylabel("Previously Undiscovered \nFlipped Points (%)",fontsize=self.labelSize)
         # plt.axhline(y=0.5*flipped, color='r', linestyle='-')
         if save:
             plt.savefig(self.savePath+"_Count_percentage.pdf", bbox_inches="tight", pad_inches=0)
@@ -314,7 +314,7 @@ class draw:
         g = plt.figure(figsize=(self.figsize_x,self.figsize_y))
         plt.plot(f_g)
         plt.xlabel("Run")
-        plt.ylabel("Previously Uniscovered Flipped Points")
+        plt.ylabel("Previously Undiscovered Flipped Points")
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_asc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
@@ -324,7 +324,7 @@ class draw:
         plt.xticks(fontsize=self.tickSize)
         plt.yticks(fontsize=self.tickSize)
         plt.xlabel("Run",fontsize=self.labelSize)
-        plt.ylabel("Previously Uniscovered \nFlipped Points (%)",fontsize=self.labelSize)
+        plt.ylabel("Previously Undiscovered \nFlipped Points (%)",fontsize=self.labelSize)
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_Percentage_asc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
@@ -371,7 +371,7 @@ class draw:
         plt.xticks(fontsize=self.tickSize)
         plt.yticks(fontsize=self.tickSize)
         plt.xlabel("Run",fontsize=self.labelSize)
-        plt.ylabel("Previously Uniscovered Flipped Points",fontsize=self.labelSize)
+        plt.ylabel("Previously Undiscovered Flipped Points",fontsize=self.labelSize)
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_dsc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
@@ -381,7 +381,7 @@ class draw:
         plt.xticks(fontsize=self.tickSize)
         plt.yticks(fontsize=self.tickSize)
         plt.xlabel("Run",fontsize=self.labelSize)
-        plt.ylabel("Previously Uniscovered \nFlipped Points (%)",fontsize=self.labelSize)
+        plt.ylabel("Previously Undiscovered \nFlipped Points (%)",fontsize=self.labelSize)
         if save:
             plt.savefig(self.savePath+"_FlippableVRun_Percentage_dsc.pdf", bbox_inches="tight", pad_inches=0)
         plt.show()
@@ -399,7 +399,7 @@ class draw:
         plt.xticks(fontsize=self.tickSize)
         plt.yticks(fontsize=self.tickSize)
         plt.xlabel("Run",fontsize=self.labelSize)
-        plt.ylabel("Previously Uniscovered \nFlipped Points (%)",fontsize=self.labelSize)
+        plt.ylabel("Previously Undiscovered \nFlipped Points (%)",fontsize=self.labelSize)
         plt.legend(fontsize=self.labelSize)
         if save:
             plt.savefig("FlipFig/Paper/"+self.filename+"_FlipOrder.pdf", bbox_inches="tight", pad_inches=0)

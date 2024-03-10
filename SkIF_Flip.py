@@ -18,8 +18,8 @@ def isolationforest(filename, optSettings):
     
     
     if os.path.exists(folderpath+filename+".mat") == 1:
-        if os.path.getsize(folderpath+filename+".mat") > 200000: # 200KB
-            return
+        # if os.path.getsize(folderpath+filename+".mat") > 200000: # 200KB
+        #     return
         try:
             df = loadmat(folderpath+filename+".mat")
         except NotImplementedError:
@@ -33,9 +33,9 @@ def isolationforest(filename, optSettings):
             return
         
     elif os.path.exists(folderpath+filename+".csv") == 1:
-        if os.path.getsize(folderpath+filename+".csv") > 200000: # 200KB
-            print("Didn\'t run -> Too large - ", filename)    
-            return
+        # if os.path.getsize(folderpath+filename+".csv") > 200000: # 200KB
+        #     print("Didn\'t run -> Too large - ", filename)    
+        #     return
         X = pd.read_csv(folderpath+filename+".csv")
         target=X["target"].to_numpy()
         X=X.drop("target", axis=1)
@@ -69,20 +69,21 @@ def isolationforest(filename, optSettings):
     
     
 def runIF(filename, X, gt, params, runs, mode):
-    
+    print(X.shape)
     labels = []
     timeElapsed = []
     for i in range(runs):
-        #time
+        # print(i)
         t1_start = process_time() 
         clustering = IsolationForest(n_estimators=params[0], max_samples=params[1], 
                                       max_features=params[3], bootstrap=params[4], 
-                                      n_jobs=params[5], warm_start=params[6],random_state=i+90).fit(X)
+                                      n_jobs=params[5], warm_start=params[6],random_state=90+i).fit(X)
         t1_stop = process_time()
         timeElapsed.append(t1_stop-t1_start)
-
+        
         l = clustering.predict(X)
         l = [0 if x == 1 else 1 for x in l]
+        # print(l)
         labels.append(l)
     avgTimeElapsed = sum(timeElapsed)/len(timeElapsed)
     
@@ -94,10 +95,13 @@ def runIF(filename, X, gt, params, runs, mode):
     avgFlippedPerRunPercentage = g.avgFlippedPerRun/len(labels[0])
     g.labelSize = 18
     g.tickSize = 18
+    print("ti_fo_all, to_fi_all, ti_fo_avg, to_fi_avg")
+    print(ti_fo_all, to_fi_all, ti_fo_avg, to_fi_avg)
     # g.avgFlippedInSingleRun()
     # g.flippedInSingleRunSorted()
     # g.flippedInSingleRunUnsorted()
     # g.flippedInSingleRunUnsortedBarchart(True)
+    
     _, typ = g.get50thPercentile()
     asc = g.flippedInSingleRunSortedASC()
     dsc = g.flippedInSingleRunSortedDSC()
@@ -142,10 +146,11 @@ if __name__ == '__main__':
     #     optSettings[5] = None
     #     isolationforest(fname, optSettings)
               
-    optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
+    # optSettings = optimalSettingsUni[optimalSettingsUni['Filename'] == 'breastw'].to_numpy()[0][1:]
   
-    isolationforest('breastw', optSettings)
+    # isolationforest('breastw', optSettings)
     
+    isolationforest('spambase', [500, 'auto', 'auto', False, False, False])
     
     
 def drawFlipsAllDataset():

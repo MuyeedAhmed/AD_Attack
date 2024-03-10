@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore")
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import LocalOutlierFactor
+# Matlab Engine doesn't work with anaconda
 import matlab.engine
     
 # from sklearn.svm import OneClassSVM
@@ -52,7 +53,7 @@ def calculateAccuracy(filename, Algo):
         return
     
     
-    X_embedded = TSNE(n_components=2, learning_rate='auto',perplexity = 20,
+    X_embedded = TSNE(n_components=2, learning_rate='auto',perplexity = 2,
                        init='random', random_state=(0)).fit_transform(X)
     
     X_embedded = pd.DataFrame(X_embedded)
@@ -391,6 +392,10 @@ def runAlgo_restart(filename, algo, X):
         clustering2 = IsolationForest(random_state=400).fit(X)
         clustering3 = IsolationForest(random_state=800).fit(X)
         clustering4 = IsolationForest(random_state=1).fit(X)
+        # clustering1 = IsolationForest(random_state=11).fit(X)
+        # clustering2 = IsolationForest(random_state=21).fit(X)
+        # clustering3 = IsolationForest(random_state=32).fit(X)
+        # clustering4 = IsolationForest(random_state=42).fit(X)
         l1 = clustering1.predict(X)
         l1 = [0 if x == 1 else 1 for x in l1]
         l2 = clustering2.predict(X)
@@ -477,7 +482,23 @@ def LOF_ContFactor(X):
         lof_per = 0
     
     return lof_per, labels_lof
+
+
 def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
+    fs_legend = 15
+    fcolor_stable = "gainsboro"
+    ecolor_stable = "black"
+    # ecolor_stable = "dimgrey"
+    marker_stable = "o"
+    
+    fcolor_flip = "orangered"
+    marker_flip = "X"
+    
+    x_limit = (30, 55)
+    y_limit = (-100, 5)
+    
+    # x_limit = (-100, 100)
+    # y_limit = (-100, 100)
     """Restart"""
     l1, l2, l3, l4 = runAlgo_restart(filename, Algo, X)
     
@@ -487,116 +508,152 @@ def drawPlot_full(filename, Algo, tool1, tool2, x, y, X):
     l2_l3_xor = np.logical_xor(l2,l3)
     l_r2 = np.logical_or(l_r1, l2_l3_xor)
     
+    
+    array1 = np.array(l_r1, dtype=int)
+    array2 = np.array(l_r2, dtype=int)
+    l_r2_minus_l_r1 = np.subtract(array2, array1) > 0
+    
+    
     l3_l4_xor = np.logical_xor(l3,l4)
     l_r3 = np.logical_or(l_r2, l3_l4_xor)
     
-    plt.rcParams['figure.figsize'] = [7,5]
+    array1 = np.array(l_r2, dtype=int)
+    array2 = np.array(l_r3, dtype=int)
+    l_r3_minus_l_r2 = np.subtract(array2, array1) > 0
+    
+    
+    plt.rcParams['figure.figsize'] = [8,5]
     
     # L1-L2
     
     fig = plt.figure()
+    plt.xlim(x_limit)
+    plt.ylim(y_limit)
+    
     indicesToKeep = (l_r1 == 0)
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
+      ,s = 50, marker="o", facecolors=fcolor_stable, edgecolor=ecolor_stable, label="Stable Points")
     
     indicesToKeep = (l_r1 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+      ,s = 100, marker=marker_flip, facecolors=fcolor_flip, edgecolor='black', label="Flipped Points")
+
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.legend()    
+    plt.legend(fontsize=fs_legend)    
     plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_1.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     # L2-L3
     
     fig = plt.figure()
+    plt.xlim(x_limit)
+    plt.ylim(y_limit)
+    
     indicesToKeep = (l_r2 == 0)
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
+      ,s = 50, marker="o", facecolors=fcolor_stable, edgecolor=ecolor_stable, label="Stable Points")
+    
+    
+    indicesToKeep = (l_r2_minus_l_r1 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 1200, marker="o", facecolors="none", edgecolor='black', label="")
     
     indicesToKeep = (l_r2 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+      ,s = 100, marker=marker_flip, facecolors=fcolor_flip, edgecolor='black', label="Flipped Points")
+    
+    
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.legend()
+    plt.legend(fontsize=fs_legend)    
     plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_2.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
     #L3-L4
     fig = plt.figure()
+    plt.xlim(x_limit)
+    plt.ylim(y_limit)
     indicesToKeep = (l_r3 == 0)
     plt0 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
+      ,s = 50, marker="o", facecolors=fcolor_stable, edgecolor=ecolor_stable, label="Stable Points")
+    
+    
+    indicesToKeep = (l_r3_minus_l_r2 == 1)
+    plt2 = plt.scatter(x.loc[indicesToKeep,1]
+      ,x.loc[indicesToKeep,0]
+      ,s = 1200, marker="o", facecolors="none", edgecolor='black', label="")
     
     indicesToKeep = (l_r3 == 1)
     plt2 = plt.scatter(x.loc[indicesToKeep,1]
       ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+      ,s = 100, marker=marker_flip, facecolors=fcolor_flip, edgecolor='black', label="Flipped Points")
+    
+    
     plt.grid(False)
     plt.xticks([])
     plt.yticks([])
-    plt.legend()
+    plt.legend(fontsize=fs_legend)    
 
     plt.savefig('Fig/TSNE/Restart_'+filename+'_Sk'+Algo+'_3.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     plt.show()
     
-    ''' Resource '''
+    # ''' Resource '''
     
-    l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
+    # l1f, l2f, l3f, l4f, li = runAlgo_resource_incon(filename, Algo, X)
     
-    l1f_l2f_xor = np.logical_xor(l1f,l2f)
-    lf_r1 = l1f_l2f_xor
+    # l1f_l2f_xor = np.logical_xor(l1f,l2f)
+    # lf_r1 = l1f_l2f_xor
     
-    l2f_l3f_xor = np.logical_xor(l2f,l3f)
-    lf_r2 = np.logical_or(lf_r1, l2f_l3f_xor)
+    # l2f_l3f_xor = np.logical_xor(l2f,l3f)
+    # lf_r2 = np.logical_or(lf_r1, l2f_l3f_xor)
     
-    l3f_l4f_xor = np.logical_xor(l3f,l4f)
-    lf_r3 = np.logical_or(lf_r2, l3f_l4f_xor)
+    # l3f_l4f_xor = np.logical_xor(l3f,l4f)
+    # lf_r3 = np.logical_or(lf_r2, l3f_l4f_xor)
     
     
-    fig = plt.figure()
-    indicesToKeep = (lf_r3 == 0)
-    plt0 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
+    # fig = plt.figure()
+    # indicesToKeep = (lf_r3 == 0)
+    # plt0 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 50, facecolors=fcolor_stable, edgecolor=ecolor_stable, label="Stable Points")
     
-    indicesToKeep = (lf_r3 == 1)
-    plt2 = plt.scatter(x.loc[indicesToKeep,1]
-      ,x.loc[indicesToKeep,0]
-      ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend()
-    plt.savefig('Fig/TSNE/Resource_'+filename+'_Sk'+Algo+'.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
-    plt.show()
+    # indicesToKeep = (lf_r3 == 1)
+    # plt2 = plt.scatter(x.loc[indicesToKeep,1]
+    #   ,x.loc[indicesToKeep,0]
+    #   ,s = 100, marker=marker_flip, facecolors=fcolor_flip, edgecolor='black', label="Flipped Points")
+    # plt.grid(False)
+    # plt.xticks([])
+    # plt.yticks([])
+    # plt.legend(fontsize=fs_legend)    
+    # plt.savefig('Fig/TSNE/Resource_'+filename+'_Sk'+Algo+'.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
+    # plt.show()
     
-    """Inconsistency"""
+    # """Inconsistency"""
     
     # l1_li_xor = np.logical_xor(l1,li)
     # fig = plt.figure()
     # indicesToKeep = (l1_li_xor == 0)
     # plt0 = plt.scatter(x.loc[indicesToKeep,1]
     #   ,x.loc[indicesToKeep,0]
-    #   ,s = 25, facecolors='none', edgecolor='black', label="Stable Points")
+    #   ,s = 50, facecolors=fcolor_stable, edgecolor=ecolor_stable, label="Stable Points")
     
     # indicesToKeep = (l1_li_xor == 1)
     # plt2 = plt.scatter(x.loc[indicesToKeep,1]
     #   ,x.loc[indicesToKeep,0]
-    #   ,s = 75, marker='x', facecolors='black', edgecolor='black', label="Flipped Points")
+    #   ,s = 100, marker=marker_flip, facecolors=fcolor_flip, edgecolor='black', label="Flipped Points")
     # plt.grid(False)
     # plt.xticks([])
     # plt.yticks([])
-    # plt.legend()
+    # plt.legend(fontsize=fs_legend)    
     
     # plt.savefig('Fig/TSNE/I_'+Algo+'_'+filename+'_SkMat.pdf', dpi=fig.dpi, bbox_inches="tight", pad_inches=0)
     # plt.show()
@@ -619,9 +676,9 @@ if __name__ == '__main__':
     # calculateAccuracy("ionosphere", "LOF")
         
     # calculateAccuracy("fertility", "IF")
-    calculateAccuracy("glass", "IF")
+    # calculateAccuracy("glass", "IF")
     
-    # calculateAccuracy("spambase", "IF")
+    calculateAccuracy("spambase", "IF")
 
 
 
